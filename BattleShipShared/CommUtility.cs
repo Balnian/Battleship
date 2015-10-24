@@ -11,7 +11,7 @@ namespace BattleShipShared
 {
     namespace UtilityTools
     {
-        class CommUtility
+        public class CommUtility
         {
             public static void SerializeAndSend(NetworkStream ns, object o)
             {

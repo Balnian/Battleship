@@ -19,7 +19,7 @@ namespace Battleship
         {
             InitializeComponent();
             timer1.Start();
-            jeu = new Jeu();
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -34,6 +34,7 @@ namespace Battleship
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             KillCurrentThread();
+            if(jeu!=null)
             jeu.Close();
         }
 
@@ -45,6 +46,7 @@ namespace Battleship
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if(jeu!=null)
             switch (jeu.State)
             {
                 case Jeu.GameState.WaitingStartGame:
@@ -74,6 +76,21 @@ namespace Battleship
         private void button1_Click_1(object sender, EventArgs e)
         {
             jeu.EnvoiBateau();
+        }
+
+        private void BT_Connection_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                jeu = new Jeu();
+            }
+            catch (Exception ex)
+            {
+                
+                MessageBox.Show(ex.Message);
+            }
+            
+
         }
     }
 }

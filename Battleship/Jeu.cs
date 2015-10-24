@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Drawing;
 using BattleShipShared.Packet;
+using BattleShipShared.UtilityTools;
 
 
 namespace Battleship
@@ -43,7 +44,7 @@ namespace Battleship
                 {
                     //Console.Beep(700, 200);
                     continue;
-                } while ((String)ConnUtility.ReadAndDeserialize(ns) != "Start");
+                } while ((String)CommUtility.ReadAndDeserialize(ns) != "Start");
 
                 //gameStarted = true;
                 State = GameState.PlacingBoat;
@@ -57,7 +58,7 @@ namespace Battleship
 
         public void EnvoiBateau()
         {
-            ConnUtility.SerializeAndSend(serveur.GetStream(), new PosShips
+            CommUtility.SerializeAndSend(serveur.GetStream(), new PosShips
             {
                 PPorteAvion = new Point(0, 0),
                 OPorteAvion = PosShips.Orientation.Horizontale,

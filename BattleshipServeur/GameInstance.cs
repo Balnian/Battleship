@@ -1,5 +1,5 @@
-﻿using BattleShipPackets;
-//using BattleShipPackets;
+﻿using BattleShipShared.Packet;
+using BattleShipShared.UtilityTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,17 +65,17 @@ namespace BattleshipServer
 
 
             LogConsole.Log("Début Partie");
-           
-            ConnUtility.SerializeAndSend(StreamJ1, "Start");
-            ConnUtility.SerializeAndSend(StreamJ2, "Start");
+
+            CommUtility.SerializeAndSend(StreamJ1, "Start");
+            CommUtility.SerializeAndSend(StreamJ2, "Start");
 
             StreamJ1.ReadTimeout = StreamJ2.ReadTimeout=60000;
             try 
 	        {
                 LogConsole.Log("Lecture 1 ");
-                GrilleJ1 = (PosShips) ConnUtility.ReadAndDeserialize(StreamJ1);
+                GrilleJ1 = (PosShips)CommUtility.ReadAndDeserialize(StreamJ1);
                 LogConsole.Log("Lecture 2 ");
-                GrilleJ2 = (PosShips) ConnUtility.ReadAndDeserialize(StreamJ2);
+                GrilleJ2 = (PosShips)CommUtility.ReadAndDeserialize(StreamJ2);
                 LogConsole.Log("Tentative Lecture");
                 LogConsole.Log(GrilleJ1.PPorteAvion.ToString());
                 LogConsole.Log(GrilleJ2.PPorteAvion.ToString());

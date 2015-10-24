@@ -10,7 +10,7 @@ namespace BattleShipShared
 {
     namespace UtilityTools
     {
-        class ConnUtility
+        public class ConnUtility
         {
             public static bool TestClient(TcpClient conn)
             {
