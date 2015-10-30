@@ -28,7 +28,7 @@ namespace Battleship
         public Mutex Lock = new Mutex();
         public GameState State { get; private set; }
         private TcpClient serveur;
-        private Thread Attente;
+        private Thread attente;
         private Thread waitingTurn;
         private List<Hit> listHit = new List<Hit>();
         //private volatile bool gameStarted = false;
@@ -49,8 +49,8 @@ namespace Battleship
             {
                 case GameState.WaitingStartGame:
                     serveur = new TcpClient("P104-14", 8080);
-                    Attente = new Thread(AttendreDebutPartie);
-                    Attente.Start();
+                    attente = new Thread(AttendreDebutPartie);
+                    attente.Start();
                     break;
                 case GameState.PlacingBoat:
                     //L'utilisateur place ses bateau dans l'interface
@@ -61,7 +61,6 @@ namespace Battleship
                     break;
                 case GameState.PlayingTurn:
                     //L'utilisateur doit jouer son tour
-
                     break;
                 case GameState.ServerDC:
                     break;
@@ -169,7 +168,8 @@ namespace Battleship
 
         public void Close()
         {
-            Attente.Abort();
+            attente.Abort();
+            waitingTurn.Abort();
             serveur.Close();
 
         }
