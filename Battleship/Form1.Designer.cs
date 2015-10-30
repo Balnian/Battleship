@@ -33,6 +33,7 @@
             this.LB_State = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.BT_Connection = new System.Windows.Forms.Button();
+            this.battleShipGrid1 = new BattleShipGrid.BattleShipGrid();
             this.SuspendLayout();
             // 
             // timer1
@@ -68,11 +69,28 @@
             this.BT_Connection.UseVisualStyleBackColor = true;
             this.BT_Connection.Click += new System.EventHandler(this.BT_Connection_Click);
             // 
+            // battleShipGrid1
+            // 
+            this.battleShipGrid1.BorderOfSelection = System.Drawing.Color.Transparent;
+            this.battleShipGrid1.ContreTorpilleur = global::Battleship.Properties.Resources.contretorpilleur;
+            this.battleShipGrid1.Croiseur = global::Battleship.Properties.Resources.Croiseur;
+            this.battleShipGrid1.GridColor = System.Drawing.Color.Black;
+            this.battleShipGrid1.GridNumber = ((uint)(10u));
+            this.battleShipGrid1.InteriorOfSelection = System.Drawing.Color.Red;
+            this.battleShipGrid1.Location = new System.Drawing.Point(161, 88);
+            this.battleShipGrid1.Name = "battleShipGrid1";
+            this.battleShipGrid1.PorteAvions = global::Battleship.Properties.Resources.PorteAvions;
+            this.battleShipGrid1.Size = new System.Drawing.Size(150, 150);
+            this.battleShipGrid1.SousMarin = global::Battleship.Properties.Resources.SousMarin;
+            this.battleShipGrid1.TabIndex = 5;
+            this.battleShipGrid1.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(647, 462);
+            this.Controls.Add(this.battleShipGrid1);
             this.Controls.Add(this.BT_Connection);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.LB_State);
@@ -90,6 +108,7 @@
         private System.Windows.Forms.Label LB_State;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BT_Connection;
+        private BattleShipGrid.BattleShipGrid battleShipGrid1;
 
     }
 }

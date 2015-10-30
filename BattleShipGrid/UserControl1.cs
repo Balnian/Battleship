@@ -28,13 +28,18 @@ namespace BattleShipGrid
                 X=p.X;
                 Y=p.Y;
             }
+
+            public Point ToPoint()
+            {
+                return new Point((int)X,(int)Y);
+            }
             
         }
 
         public enum GridState
 	    {
-	            None,
-                BateauxPlacer,
+	            BateauxPlacer,
+                None,                
                 PlacementPorteAvions,
                 PlacementCroiseur ,
                 PlacementContreTorpilleur,
@@ -127,7 +132,7 @@ namespace BattleShipGrid
         private const uint SizeSousMarin = 3;
         private const uint SizeTorpilleur = 2;
 
-        private Orientation OCurrentShip { get; set; }
+        private PosShips.Orientation OCurrentShip { get; set; }
 
 
         /// <summary>
@@ -141,23 +146,87 @@ namespace BattleShipGrid
         public BattleShipGrid()
         {
             InitializeComponent();
+            //DoubleBuffered = true;
             EtatGrille = GridState.None;
-            OCurrentShip = Orientation.Horizontal;
+            OCurrentShip = PosShips.Orientation.Horizontale;
+            PositionBateau = new PosShips();
+            //this.SetStyle(ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            //this.SetStyle(ControlStyles.AllPaintingInWmPaint)
 
         }
-       
 
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            Refresh();
+        }
         /// <summary>
         /// Action lors du click sur la grille
         /// </summary>
         /// <param name="e"></param>
         protected override void OnClick(EventArgs e)
         {
-            Refresh();
-            FPoint coords = GetGridCoordOfMouse();
-            DrawSelection(coords);
+            MouseEventArgs me = (MouseEventArgs)e;
+            if (me.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (OCurrentShip == PosShips.Orientation.Horizontale)
+                    OCurrentShip = PosShips.Orientation.Verticale;
+                else
+                    OCurrentShip = PosShips.Orientation.Horizontale;
+            }
+            else
+            {
+                switch (EtatGrille)
+                {
+                    case GridState.BateauxPlacer:
+                        break;
+                    case GridState.None:
+                        EtatGrille = GridState.PlacementPorteAvions;
+                        break;
+                    case GridState.PlacementPorteAvions:
+                        PositionBateau.PPorteAvion = GetGridCoordOfMouse().ToPoint();
+                        PositionBateau.OPorteAvion = OCurrentShip;
+                        EtatGrille = GridState.PlacementCroiseur;
+                        break;
+                    case GridState.PlacementCroiseur:
+                        PositionBateau.PCroiseur = GetGridCoordOfMouse().ToPoint();
+                        PositionBateau.OCroiseur = OCurrentShip;
+                        EtatGrille = GridState.PlacementContreTorpilleur;
+                        break;
+                    case GridState.PlacementContreTorpilleur:
+                        PositionBateau.PContreTorpilleur = GetGridCoordOfMouse().ToPoint();
+                        PositionBateau.OContreTorpilleur = OCurrentShip;
+                        EtatGrille = GridState.PlacementSousMarin;
+                        break;
+                    case GridState.PlacementSousMarin:
+                        PositionBateau.PSousMarin = GetGridCoordOfMouse().ToPoint();
+                        PositionBateau.OSousMarin = OCurrentShip;
+                        EtatGrille = GridState.PlacementTorpilleur;
+                        break;
+                    case GridState.PlacementTorpilleur:
+                        PositionBateau.PTorpilleur = GetGridCoordOfMouse().ToPoint();
+                        PositionBateau.OTorpilleur = OCurrentShip;
+                        EtatGrille = GridState.BateauxPlacer;
+                        break;
+                    default:
+                        break;
+                }
+                Refresh();
+                /*if (EtatGrille < GridState.PlacementTorpilleur)
+                    EtatGrille++;*/
+                FPoint coords = GetGridCoordOfMouse();
+                //DrawSelection(coords);
+            }
+            
 
             //MessageBox.Show(PGridColor.ToString() + coords.X.ToString() + " " + coords.Y.ToString());
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if(EtatGrille != GridState.BateauxPlacer && EtatGrille != GridState.None )
+            Refresh();
         }
 
         /// <summary>
@@ -166,8 +235,7 @@ namespace BattleShipGrid
         /// <returns>Coordonnées de la grille</returns>
         private FPoint GetGridCoordOfMouse()
         {
-            if (EtatGrille < GridState.PlacementTorpilleur)
-                EtatGrille++;
+            
             FPoint mouse = new FPoint(this.PointToClient(Cursor.Position));
             mouse.X = (float)Math.Floor(mouse.X / GridRectWidth);
             mouse.Y = (float)Math.Floor(mouse.Y / GridRectHeight);
@@ -246,8 +314,8 @@ namespace BattleShipGrid
                 default:
                     break;
             }*/
-            if(PorteAvions!= null)
-                DrawImage(PorteAvions,2*GridRectWidth,2*GridRectHeight,5*GridRectWidth,1*GridRectHeight);
+            /*if(PorteAvions!= null)
+                DrawImage(PorteAvions,2*GridRectWidth,2*GridRectHeight,5*GridRectWidth,1*GridRectHeight);*/
         }
 
         private void DrawSingleShip(Image img, GridState ImgState)
@@ -256,15 +324,55 @@ namespace BattleShipGrid
             if (EtatGrille == ImgState) // si dans le même état que l'image dessine un preview
             {
                 FPoint pos = GetGridCoordOfMouse();
-                if (OCurrentShip == Orientation.Vertical)
+                if (OCurrentShip == PosShips.Orientation.Verticale)
                 {
-                    Image carry = Torpilleur;
+                    Image carry = (Image)img.Clone();
                     carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                    DrawImage(carry, pos.X * GridRectWidth, pos.Y * GridRectHeight, 1 * GridRectWidth, SizeTorpilleur * GridRectHeight);
+                    switch (ImgState)
+                    {
+                        case GridState.PlacementPorteAvions:
+                            DrawImage(carry, pos.X * GridRectWidth, pos.Y * GridRectHeight, 1 * GridRectWidth, SizePorteAvions * GridRectHeight);
+                            break;
+                        case GridState.PlacementCroiseur:
+                            DrawImage(carry, pos.X * GridRectWidth, pos.Y * GridRectHeight, 1 * GridRectWidth, SizeCroiseur * GridRectHeight);
+                            break;
+                        case GridState.PlacementContreTorpilleur:
+                            DrawImage(carry, pos.X * GridRectWidth, pos.Y * GridRectHeight, 1 * GridRectWidth, SizeContreTorpilleur * GridRectHeight);
+                            break;
+                        case GridState.PlacementSousMarin:
+                            DrawImage(carry, pos.X * GridRectWidth, pos.Y * GridRectHeight, 1 * GridRectWidth, SizeSousMarin * GridRectHeight);
+                            break;
+                        case GridState.PlacementTorpilleur:
+                            DrawImage(carry, pos.X * GridRectWidth, pos.Y * GridRectHeight, 1 * GridRectWidth, SizeTorpilleur * GridRectHeight);
+                            break;
+                        default:
+                            break;
+                    }
+                    
                 }
                 else
                 {
-                    DrawImage(Torpilleur, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizeTorpilleur * GridRectWidth, 1 * GridRectHeight);
+                    switch (ImgState)
+                    {
+                        case GridState.PlacementPorteAvions:
+                            DrawImage(img, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizePorteAvions * GridRectWidth, 1 * GridRectHeight);
+                            break;
+                        case GridState.PlacementCroiseur:
+                            DrawImage(img, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizeCroiseur * GridRectWidth, 1 * GridRectHeight);
+                            break;
+                        case GridState.PlacementContreTorpilleur:
+                            DrawImage(img, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizeContreTorpilleur * GridRectWidth, 1 * GridRectHeight);
+                            break;
+                        case GridState.PlacementSousMarin:
+                            DrawImage(img, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizeSousMarin * GridRectWidth, 1 * GridRectHeight);
+                            break;
+                        case GridState.PlacementTorpilleur:
+                            DrawImage(img, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizeTorpilleur * GridRectWidth, 1 * GridRectHeight);
+                            break;
+                        default:
+                            break;
+                    }
+                    DrawImage(img, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizeTorpilleur * GridRectWidth, 1 * GridRectHeight);
                 }
 
             }
@@ -275,7 +383,7 @@ namespace BattleShipGrid
                     case GridState.PlacementPorteAvions:
                         if (PositionBateau.OPorteAvion == PosShips.Orientation.Verticale)
                         {
-                            Image carry = img;
+                            Image carry = (Image)img.Clone();
                             carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
                             DrawImage(carry, PositionBateau.PPorteAvion.X * GridRectWidth, PositionBateau.PPorteAvion.Y * GridRectHeight, 1 * GridRectWidth, SizePorteAvions * GridRectHeight);
                         }
@@ -287,7 +395,7 @@ namespace BattleShipGrid
                     case GridState.PlacementCroiseur:
                         if (PositionBateau.OCroiseur == PosShips.Orientation.Verticale)
                         {
-                            Image carry = img;
+                            Image carry = (Image)img.Clone();
                             carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
                             DrawImage(carry, PositionBateau.PCroiseur.X * GridRectWidth, PositionBateau.PCroiseur.Y * GridRectHeight, 1 * GridRectWidth, SizeCroiseur * GridRectHeight);
                         }
@@ -299,7 +407,7 @@ namespace BattleShipGrid
                     case GridState.PlacementContreTorpilleur:
                         if (PositionBateau.OContreTorpilleur == PosShips.Orientation.Verticale)
                         {
-                            Image carry = img;
+                            Image carry = (Image)img.Clone();
                             carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
                             DrawImage(carry, PositionBateau.PContreTorpilleur.X * GridRectWidth, PositionBateau.PContreTorpilleur.Y * GridRectHeight, 1 * GridRectWidth, SizeContreTorpilleur * GridRectHeight);
                         }
@@ -311,7 +419,7 @@ namespace BattleShipGrid
                     case GridState.PlacementSousMarin:
                         if (PositionBateau.OSousMarin == PosShips.Orientation.Verticale)
                         {
-                            Image carry = img;
+                            Image carry = (Image)img.Clone();
                             carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
                             DrawImage(carry, PositionBateau.PSousMarin.X * GridRectWidth, PositionBateau.PSousMarin.Y * GridRectHeight, 1 * GridRectWidth, SizeSousMarin * GridRectHeight);
                         }
@@ -323,7 +431,7 @@ namespace BattleShipGrid
                     case GridState.PlacementTorpilleur:
                         if (PositionBateau.OTorpilleur == PosShips.Orientation.Verticale)
                         {
-                            Image carry = img;
+                            Image carry = (Image)img.Clone();
                             carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
                             DrawImage(carry, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 1 * GridRectWidth, SizeTorpilleur * GridRectHeight);
                         }
@@ -336,7 +444,7 @@ namespace BattleShipGrid
                         break;
                 }
             }
-                DrawImage(Torpilleur, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
+                //DrawImage(Torpilleur, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
 
             
         }
@@ -344,6 +452,7 @@ namespace BattleShipGrid
         private void DrawImage(Image img, float x, float y, float width, float height)
         {
             Graphics graph = this.CreateGraphics();
+            //BufferedGraphicsContext graph = BufferedGraphicsManager.Current;
             graph.DrawImage(img,x,y,width,height);
             //MessageBox.Show(x.)
             
