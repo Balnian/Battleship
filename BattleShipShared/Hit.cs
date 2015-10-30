@@ -15,6 +15,8 @@ namespace BattleShipShared
             public enum HitState
             {
                 Hit,
+                Flop,
+                NoAction,
                 CoulerPorteAvion,
                 CoulerCroiseur,
                 CoulerContreTorpilleur,
