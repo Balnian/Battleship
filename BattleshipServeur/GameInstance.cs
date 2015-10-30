@@ -60,8 +60,8 @@ namespace BattleshipServer
             NetworkStream StreamJ1 = Joueur1.GetStream();
             NetworkStream StreamJ2 = Joueur2.GetStream();
 
-            PosShips GrilleJ1;
-            PosShips GrilleJ2;
+            PosShips GrilleJ1 = null;
+            PosShips GrilleJ2 = null;
 
 
             LogConsole.Log("Début Partie");
@@ -82,10 +82,19 @@ namespace BattleshipServer
 	        }
 	        catch (Exception e)
 	        {
-                if(ConnUtility.TestClient(Joueur1))
+                if (GrilleJ1!=null || GrilleJ2!=null)
                 {
-
+                    if (ConnUtility.TestClient(Joueur1))
+                    {
+                        CommUtility.SerializeAndSend(StreamJ1, new Result { Etat = Result.ResultState.Victory, EnemyShips = GrilleJ2 });
+                    }
+                    else if (ConnUtility.TestClient(Joueur2))
+                    {
+                        CommUtility.SerializeAndSend(StreamJ2, new Result { Etat = Result.ResultState.Victory, EnemyShips = GrilleJ1 });
+                    }
                 }
+                
+                
 
 		        LogConsole.Log("Erreur réception grille Erreur: " + e.Message);
 	        }
