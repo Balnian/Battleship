@@ -46,31 +46,40 @@ namespace Battleship
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+           
             if(jeu!=null)
-            switch (jeu.State)
             {
-                case Jeu.GameState.WaitingStartGame:
-                    LB_State.Text = "WaitingStartGame";
-                    break;
-                case Jeu.GameState.PlacingBoat:
-                    LB_State.Text = "PlacingBoat";
-                    break;
-                case Jeu.GameState.WaitingTurn:
-                    LB_State.Text = "WaitingTurn";
-                    break;
-                case Jeu.GameState.PlayingTurn:
-                    LB_State.Text = "PlayingTurn";
-                    break;
-                case Jeu.GameState.Victory:
-                    LB_State.Text = "Victory";
-                    break;
-                case Jeu.GameState.Lose:
-                    LB_State.Text = "Lose";
-                    break;
-                default:
-                    LB_State.Text = "WTF";
-                    break;
+                jeu.Lock.WaitOne();
+                switch (jeu.State)
+                {
+                    case Jeu.GameState.WaitingStartGame:
+                        LB_State.Text = "WaitingStartGame";
+                        break;
+                    case Jeu.GameState.PlacingBoat:
+                        LB_State.Text = "PlacingBoat";
+                        break;
+                    case Jeu.GameState.WaitingTurn:
+                        LB_State.Text = "WaitingTurn";
+                        break;
+                    case Jeu.GameState.PlayingTurn:
+                        LB_State.Text = "PlayingTurn";
+                        break;
+                    case Jeu.GameState.ServerDC:
+                        LB_State.Text = "ServerDC";
+                        break;
+                    case Jeu.GameState.Victory:
+                        LB_State.Text = "Victory";
+                        break;
+                    case Jeu.GameState.Lose:
+                        LB_State.Text = "Lose";
+                        break;
+                    default:
+                        LB_State.Text = "WTF";
+                        break;
+                }
+                jeu.Lock.ReleaseMutex();
             }
+            
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -78,12 +87,7 @@ namespace Battleship
             if (battleShipGrid1.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
             {
                 jeu.EnvoiBateau(battleShipGrid1.PositionBateau);
-            }
-            else
-            {
-                MessageBox.Show("xxxcvbnmn");
-            }
-                
+            }                
         }
 
         private void BT_Connection_Click(object sender, EventArgs e)
