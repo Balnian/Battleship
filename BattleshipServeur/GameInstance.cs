@@ -82,7 +82,11 @@ namespace BattleshipServer
 	        }
 	        catch (Exception e)
 	        {
-		
+                if(ConnUtility.TestClient(Joueur1))
+                {
+
+                }
+
 		        LogConsole.Log("Erreur réception grille Erreur: " + e.Message);
 	        }
             
