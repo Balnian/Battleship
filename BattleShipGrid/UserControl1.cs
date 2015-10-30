@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BattleShipShared.Packet;
 
 namespace BattleShipGrid
 {
@@ -30,16 +31,45 @@ namespace BattleShipGrid
             
         }
 
+        public enum GridState
+	    {
+	            None,
+                BateauxPlacer,
+                PlacementPorteAvions,
+                PlacementCroiseur ,
+                PlacementContreTorpilleur,
+                PlacementSousMarin ,
+                PlacementTorpilleur,
+	    }
+
         #region Properties
+
+        /// <summary>
+        /// Nombre de case de la grille
+        /// </summary>
+        private uint PGridNumber = 10;
+
+        /// <summary>
+        /// Interface public pour le nombre de case de la grille
+        /// </summary>
+        public uint GridNumber 
+        {
+            get{return PGridNumber;}
+            set{
+                if(value>0)
+                    PGridNumber = value;
+                }
+        }
+
         /// <summary>
         /// Raccourcie pour le calcule de la largeur d'une case de la grille
         /// </summary>
-        private float GridRectWidth { get { return Width / 10; } }
+        private float GridRectWidth { get { return Width / GridNumber; } }
 
         /// <summary>
         /// Raccourcie pour le calcule de la hauteur d'une case de la grille
         /// </summary>
-        private float GridRectHeight { get { return Height / 10; } }
+        private float GridRectHeight { get { return Height / GridNumber; } }
 
         /// <summary>
         /// Couleur de la grille
@@ -85,13 +115,34 @@ namespace BattleShipGrid
 
         public Image PorteAvions { get; set; }
         public Image Croiseur { get; set; }
+
+        public Image ContreTorpilleur { get; set; }
         public Image SousMarin { get; set; }
         public Image Torpilleur { get; set; }
+
+
+        private const uint SizePorteAvions = 5;
+        private const uint SizeCroiseur = 4;
+        private const uint SizeContreTorpilleur = 3;
+        private const uint SizeSousMarin = 3;
+        private const uint SizeTorpilleur = 2;
+
+        private Orientation OCurrentShip { get; set; }
+
+
+        /// <summary>
+        /// Strucure qui contient la position des bateaux
+        /// </summary>
+        public PosShips PositionBateau { get; private set; }
+
+        public GridState EtatGrille { get; private set; }
 
         #endregion
         public BattleShipGrid()
         {
             InitializeComponent();
+            EtatGrille = GridState.None;
+            OCurrentShip = Orientation.Horizontal;
 
         }
        
@@ -115,9 +166,16 @@ namespace BattleShipGrid
         /// <returns>Coordonnées de la grille</returns>
         private FPoint GetGridCoordOfMouse()
         {
+            if (EtatGrille < GridState.PlacementTorpilleur)
+                EtatGrille++;
             FPoint mouse = new FPoint(this.PointToClient(Cursor.Position));
             mouse.X = (float)Math.Floor(mouse.X / GridRectWidth);
             mouse.Y = (float)Math.Floor(mouse.Y / GridRectHeight);
+            //Limite la position au nombre max de la grille
+            if (mouse.X >= GridNumber)
+                mouse.X = GridNumber - 1;
+            if (mouse.Y >= GridNumber)
+                mouse.Y = GridNumber - 1;
             //MessageBox.Show(mouse.X + " " + mouse.Y);
             return mouse;
             
@@ -143,8 +201,144 @@ namespace BattleShipGrid
 
         private void DrawShips()
         {
+
+            switch (EtatGrille)
+            {
+                case GridState.BateauxPlacer:
+                    goto case GridState.PlacementTorpilleur;
+                case GridState.PlacementTorpilleur:
+                    if (Torpilleur != null)
+                        DrawSingleShip(Torpilleur, GridState.PlacementTorpilleur);
+                    goto case GridState.PlacementSousMarin;
+                case GridState.PlacementSousMarin:
+                    if (SousMarin != null)
+                        DrawSingleShip(SousMarin, GridState.PlacementSousMarin);
+                    goto case GridState.PlacementContreTorpilleur;
+                case GridState.PlacementContreTorpilleur:
+                    if (ContreTorpilleur != null)
+                        DrawSingleShip(ContreTorpilleur, GridState.PlacementContreTorpilleur);
+                    goto case GridState.PlacementCroiseur;
+                case GridState.PlacementCroiseur:
+                    if (Croiseur != null)
+                        DrawSingleShip(Croiseur, GridState.PlacementCroiseur);
+                    goto case GridState.PlacementPorteAvions;
+                case GridState.PlacementPorteAvions:
+                    if (PorteAvions != null)
+                        DrawSingleShip(PorteAvions, GridState.PlacementPorteAvions);
+                    goto default;
+                default:
+                    break;
+
+            }
+            /*switch (EtatGrille)
+            {
+                case GridState.BateauxPlacer:
+                    
+                case GridState.PlacementPorteAvions:
+                    if (PorteAvions != null)
+                        DrawImage(PorteAvions, 2 * GridRectWidth, 2 * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
+                case GridState.PlacementCroiseur:
+                    break;
+                case GridState.PlacementSousMarin:
+                    break;
+                case GridState.PlacementTorpilleur:
+                    break;
+                default:
+                    break;
+            }*/
             if(PorteAvions!= null)
                 DrawImage(PorteAvions,2*GridRectWidth,2*GridRectHeight,5*GridRectWidth,1*GridRectHeight);
+        }
+
+        private void DrawSingleShip(Image img, GridState ImgState)
+        {
+            
+            if (EtatGrille == ImgState) // si dans le même état que l'image dessine un preview
+            {
+                FPoint pos = GetGridCoordOfMouse();
+                if (OCurrentShip == Orientation.Vertical)
+                {
+                    Image carry = Torpilleur;
+                    carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    DrawImage(carry, pos.X * GridRectWidth, pos.Y * GridRectHeight, 1 * GridRectWidth, SizeTorpilleur * GridRectHeight);
+                }
+                else
+                {
+                    DrawImage(Torpilleur, pos.X * GridRectWidth, pos.Y * GridRectHeight, SizeTorpilleur * GridRectWidth, 1 * GridRectHeight);
+                }
+
+            }
+            else // si pas dans le même état
+            {
+                switch (ImgState)
+                {
+                    case GridState.PlacementPorteAvions:
+                        if (PositionBateau.OPorteAvion == PosShips.Orientation.Verticale)
+                        {
+                            Image carry = img;
+                            carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            DrawImage(carry, PositionBateau.PPorteAvion.X * GridRectWidth, PositionBateau.PPorteAvion.Y * GridRectHeight, 1 * GridRectWidth, SizePorteAvions * GridRectHeight);
+                        }
+                        else
+                        {
+                            DrawImage(img, PositionBateau.PPorteAvion.X * GridRectWidth, PositionBateau.PPorteAvion.Y * GridRectHeight, SizePorteAvions * GridRectWidth, 1 * GridRectHeight);
+                        }
+                        break;
+                    case GridState.PlacementCroiseur:
+                        if (PositionBateau.OCroiseur == PosShips.Orientation.Verticale)
+                        {
+                            Image carry = img;
+                            carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            DrawImage(carry, PositionBateau.PCroiseur.X * GridRectWidth, PositionBateau.PCroiseur.Y * GridRectHeight, 1 * GridRectWidth, SizeCroiseur * GridRectHeight);
+                        }
+                        else
+                        {
+                            DrawImage(img, PositionBateau.PCroiseur.X * GridRectWidth, PositionBateau.PCroiseur.Y * GridRectHeight, SizeCroiseur * GridRectWidth, 1 * GridRectHeight);
+                        }
+                        break;
+                    case GridState.PlacementContreTorpilleur:
+                        if (PositionBateau.OContreTorpilleur == PosShips.Orientation.Verticale)
+                        {
+                            Image carry = img;
+                            carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            DrawImage(carry, PositionBateau.PContreTorpilleur.X * GridRectWidth, PositionBateau.PContreTorpilleur.Y * GridRectHeight, 1 * GridRectWidth, SizeContreTorpilleur * GridRectHeight);
+                        }
+                        else
+                        {
+                            DrawImage(img, PositionBateau.PContreTorpilleur.X * GridRectWidth, PositionBateau.PContreTorpilleur.Y * GridRectHeight, SizeContreTorpilleur * GridRectWidth, 1 * GridRectHeight);
+                        }
+                        break;
+                    case GridState.PlacementSousMarin:
+                        if (PositionBateau.OSousMarin == PosShips.Orientation.Verticale)
+                        {
+                            Image carry = img;
+                            carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            DrawImage(carry, PositionBateau.PSousMarin.X * GridRectWidth, PositionBateau.PSousMarin.Y * GridRectHeight, 1 * GridRectWidth, SizeSousMarin * GridRectHeight);
+                        }
+                        else
+                        {
+                            DrawImage(img, PositionBateau.PSousMarin.X * GridRectWidth, PositionBateau.PSousMarin.Y * GridRectHeight, SizeSousMarin * GridRectWidth, 1 * GridRectHeight);
+                        }
+                        break;
+                    case GridState.PlacementTorpilleur:
+                        if (PositionBateau.OTorpilleur == PosShips.Orientation.Verticale)
+                        {
+                            Image carry = img;
+                            carry.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            DrawImage(carry, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 1 * GridRectWidth, SizeTorpilleur * GridRectHeight);
+                        }
+                        else
+                        {
+                            DrawImage(img, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, SizeTorpilleur * GridRectWidth, 1 * GridRectHeight);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+                DrawImage(Torpilleur, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
+
+            
         }
 
         private void DrawImage(Image img, float x, float y, float width, float height)
@@ -160,8 +354,17 @@ namespace BattleShipGrid
         /// <param name="coords"></param>
         private void DrawSelection(FPoint coords)
         {
-            
-            DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
+            if(coords.X<9 && coords.Y<9)
+                DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
+            else if (coords.X >= 9 && coords.Y >= 9)
+                DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight,Width - coords.X * GridRectWidth, Height - coords.Y* GridRectHeight);
+            else if(coords.X>=9)
+                DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, Width - coords.X * GridRectWidth, GridRectHeight);
+            else if(coords.Y>=9)
+                DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, Height - coords.Y * GridRectHeight);
+
+
+
         }
 
         /// <summary>
@@ -169,7 +372,7 @@ namespace BattleShipGrid
         /// </summary>
         private void DrawGrid()
         {
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < GridNumber; i++)
             {
                 //ligne vertical
                 DrawLine(PGridColor, GridRectWidth * i, 0, GridRectWidth * i, this.Size.Height);
