@@ -56,21 +56,23 @@ namespace Battleship
             }
         }
 
-        public void EnvoiBateau()
+        public void EnvoiBateau(PosShips grilleBeto)
         {
-            CommUtility.SerializeAndSend(serveur.GetStream(), new PosShips
-            {
-                PPorteAvion = new Point(0, 0),
-                OPorteAvion = PosShips.Orientation.Horizontale,
-                PCroiseur = new Point(0, 1),
-                OCroiseur = PosShips.Orientation.Horizontale,
-                PContreTorpilleur = new Point(0, 2),
-                OContreTorpilleur = PosShips.Orientation.Horizontale,
-                PSousMarin = new Point(0, 3),
-                OSousMarin = PosShips.Orientation.Horizontale,
-                PTorpilleur = new Point(0, 4),
-                OTorpilleur = PosShips.Orientation.Horizontale
-            });
+            //CommUtility.SerializeAndSend(serveur.GetStream(), new PosShips
+            //{
+            //    PPorteAvion = new Point(0, 0),
+            //    OPorteAvion = PosShips.Orientation.Horizontale,
+            //    PCroiseur = new Point(0, 1),
+            //    OCroiseur = PosShips.Orientation.Horizontale,
+            //    PContreTorpilleur = new Point(0, 2),
+            //    OContreTorpilleur = PosShips.Orientation.Horizontale,
+            //    PSousMarin = new Point(0, 3),
+            //    OSousMarin = PosShips.Orientation.Horizontale,
+            //    PTorpilleur = new Point(0, 4),
+            //    OTorpilleur = PosShips.Orientation.Horizontale
+            //});
+            CommUtility.SerializeAndSend(serveur.GetStream(), grilleBeto);
+            State = Jeu.GameState.WaitingTurn;
         }
         public void Close()
         {

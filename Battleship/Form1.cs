@@ -75,7 +75,15 @@ namespace Battleship
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            jeu.EnvoiBateau();
+            if (battleShipGrid1.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
+            {
+                jeu.EnvoiBateau(battleShipGrid1.PositionBateau);
+            }
+            else
+            {
+                MessageBox.Show("xxxcvbnmn");
+            }
+                
         }
 
         private void BT_Connection_Click(object sender, EventArgs e)

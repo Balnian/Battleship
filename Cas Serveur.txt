@@ -1,0 +1,11 @@
+1.qqun se déconnect en pleine partie
+   •Le joueur restent est déclarer vaincoeur
+   
+2.joue pas dans les temps
+   •Le joueur restent est déclarer vaincoeur*
+   
+3.le serveur plante
+   •Message d'interuption du serveur
+   
+4.delais de réponse du serveur (Timeout)
+   •Message d'interuption du serveur

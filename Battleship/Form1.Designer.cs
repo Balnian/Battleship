@@ -43,25 +43,25 @@
             // LB_State
             // 
             this.LB_State.AutoSize = true;
-            this.LB_State.Location = new System.Drawing.Point(260, 39);
+            this.LB_State.Location = new System.Drawing.Point(207, 359);
             this.LB_State.Name = "LB_State";
-            this.LB_State.Size = new System.Drawing.Size(35, 13);
+            this.LB_State.Size = new System.Drawing.Size(26, 13);
             this.LB_State.TabIndex = 2;
-            this.LB_State.Text = "label1";
+            this.LB_State.Text = "État";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(208, 315);
+            this.button1.Location = new System.Drawing.Point(110, 354);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(91, 23);
             this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
+            this.button1.Text = "Envoyer Bateau";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // BT_Connection
             // 
-            this.BT_Connection.Location = new System.Drawing.Point(413, 226);
+            this.BT_Connection.Location = new System.Drawing.Point(29, 354);
             this.BT_Connection.Name = "BT_Connection";
             this.BT_Connection.Size = new System.Drawing.Size(75, 23);
             this.BT_Connection.TabIndex = 4;
@@ -77,10 +77,10 @@
             this.battleShipGrid1.GridColor = System.Drawing.Color.Black;
             this.battleShipGrid1.GridNumber = ((uint)(10u));
             this.battleShipGrid1.InteriorOfSelection = System.Drawing.Color.Red;
-            this.battleShipGrid1.Location = new System.Drawing.Point(161, 88);
+            this.battleShipGrid1.Location = new System.Drawing.Point(12, 39);
             this.battleShipGrid1.Name = "battleShipGrid1";
             this.battleShipGrid1.PorteAvions = global::Battleship.Properties.Resources.PorteAvions;
-            this.battleShipGrid1.Size = new System.Drawing.Size(150, 150);
+            this.battleShipGrid1.Size = new System.Drawing.Size(300, 300);
             this.battleShipGrid1.SousMarin = global::Battleship.Properties.Resources.SousMarin;
             this.battleShipGrid1.TabIndex = 5;
             this.battleShipGrid1.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
