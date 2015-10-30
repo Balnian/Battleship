@@ -32,6 +32,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.LB_State = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.BT_Connection = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // timer1
@@ -57,11 +58,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // BT_Connection
+            // 
+            this.BT_Connection.Location = new System.Drawing.Point(413, 226);
+            this.BT_Connection.Name = "BT_Connection";
+            this.BT_Connection.Size = new System.Drawing.Size(75, 23);
+            this.BT_Connection.TabIndex = 4;
+            this.BT_Connection.Text = "Connection";
+            this.BT_Connection.UseVisualStyleBackColor = true;
+            this.BT_Connection.Click += new System.EventHandler(this.BT_Connection_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(647, 462);
+            this.Controls.Add(this.BT_Connection);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.LB_State);
             this.Name = "Form1";
@@ -77,6 +89,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label LB_State;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BT_Connection;
 
     }
 }

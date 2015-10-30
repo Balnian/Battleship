@@ -8,8 +8,16 @@ namespace BattleShipShared
 {
     namespace UtilityTools
     {
-        class LogConsole
+        public class LogConsole
         {
+            public static void Log(String Message)
+            {
+                Console.WriteLine(">> " + Message);
+            }
+            public static void LogWithTime(String Message)
+            {
+                Console.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + ">> " + Message);
+            }
         }
     }
 }
