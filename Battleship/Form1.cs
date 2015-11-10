@@ -107,9 +107,10 @@ namespace Battleship
 
         private void battleShipGrid1_Click(object sender, EventArgs e)
         {
-            if (jeu.State == Jeu.GameState.PlayingTurn && battleShipGrid1.GetLastCoords!=null)
+            Point hitPoint;
+            if (jeu.State == Jeu.GameState.PlayingTurn && (hitPoint = battleShipGrid1.GetLastCoords) != null)
             {
-                Point hitPoint = battleShipGrid1.GetLastCoords();
+
             }
         }
     }
