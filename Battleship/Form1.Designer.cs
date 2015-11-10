@@ -84,6 +84,7 @@
             this.battleShipGrid1.SousMarin = global::Battleship.Properties.Resources.SousMarin;
             this.battleShipGrid1.TabIndex = 5;
             this.battleShipGrid1.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
+            this.battleShipGrid1.Click += new System.EventHandler(this.battleShipGrid1_Click);
             // 
             // Form1
             // 
