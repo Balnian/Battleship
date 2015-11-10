@@ -66,34 +66,34 @@ namespace Battleship
                         break;
                     case Jeu.GameState.ServerDC:
                         LB_State.Text = "ServerDC";
-                        if (MessageBox.Show("La Connexion avec le serveur a été interrompu\nVoulez-vous Réesseyer ?",
-                            "Problème Reseau",
-                            MessageBoxButtons.RetryCancel,
-                            MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
-                        {
-//**                        //Si oui Reesseyer la connection ******
-                        }
+//                        if (MessageBox.Show("La Connexion avec le serveur a été interrompu\nVoulez-vous Réesseyer ?",
+//                            "Problème Reseau",
+//                            MessageBoxButtons.RetryCancel,
+//                            MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
+//                        {
+////**                        //Si oui Reesseyer la connection ******
+//                        }
                         break;
                     case Jeu.GameState.Victory:
                         LB_State.Text = "Victory";
-                        MessageBox.Show("Victoire! :)",
-                            "État de la partie",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                        //MessageBox.Show("Victoire! :)",
+                        //    "État de la partie",
+                        //    MessageBoxButtons.OK,
+                        //    MessageBoxIcon.Information);
                         break;
                     case Jeu.GameState.Lose:
                         LB_State.Text = "Lose";
-                        MessageBox.Show("Défaite.. :(",
-                            "État de la partie",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                        //MessageBox.Show("Défaite.. :(",
+                        //    "État de la partie",
+                        //    MessageBoxButtons.OK,
+                        //    MessageBoxIcon.Information);
                         break;
                     default:
                         LB_State.Text = "WTF";
-                        MessageBox.Show("L'état du jeu est inconnue..",
-                            "Oups..",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        //MessageBox.Show("L'état du jeu est inconnue..",
+                        //    "Oups..",
+                        //    MessageBoxButtons.OK,
+                        //    MessageBoxIcon.Error);
                         break;
                 }
                 jeu.Lock.ReleaseMutex();
