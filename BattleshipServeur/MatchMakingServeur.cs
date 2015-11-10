@@ -90,6 +90,10 @@ namespace BattleshipServer
             return true;
         }
 
+
+        /// <summary>
+        /// Garbage collector
+        /// </summary>
         private void cleanInstances()
         {
             int pos = 0;
@@ -97,12 +101,13 @@ namespace BattleshipServer
             {
                 //Lock   
                 Lock.WaitOne();
-                if (GameInstances.Count > 0)
+                if (GameInstances.Count > 0 && pos < GameInstances.Count)
                 {
 
 
                     if (!ConnUtility.TestClient(GameInstances.ElementAt(pos).Joueur2) && !ConnUtility.TestClient(GameInstances.ElementAt(pos).Joueur1))
                     {
+                        GameInstances.ElementAt(pos).StopGameInstance();
                         GameInstances.Remove(GameInstances.ElementAt(pos));
                     }
                     else
@@ -110,6 +115,7 @@ namespace BattleshipServer
                         pos++;
                     }
                 }
+                //Reset position
                 if (pos >= GameInstances.Count)
                     pos = 0;
                 //Unlock

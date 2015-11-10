@@ -27,7 +27,7 @@ namespace BattleShipShared
 
             public HitState Etat { get; set; }
 
-            Point Location { get; set; }
+            public Point Location { get; set; }
         }
     }
 }
