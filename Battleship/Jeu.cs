@@ -48,8 +48,7 @@ namespace Battleship
             switch (State)
             {
                 case GameState.WaitingStartGame:
-                    serveur = new TcpClient(, 8080);
-                    serveur = new TcpClient("P104-14", 8080);
+                    serveur = new TcpClient("173.178.211.254", 8080);
                     attente = new Thread(AttendreDebutPartie);
                     attente.Start();
                     break;
