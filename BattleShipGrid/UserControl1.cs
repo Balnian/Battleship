@@ -142,6 +142,9 @@ namespace BattleShipGrid
 
         public GridState EtatGrille { get; private set; }
 
+        /// <summary>
+        /// Position de la Souris après un click
+        /// </summary>
         public Point GetLastCoords { get; private set; }
 
         #endregion
