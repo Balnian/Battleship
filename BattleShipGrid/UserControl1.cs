@@ -142,6 +142,8 @@ namespace BattleShipGrid
 
         public GridState EtatGrille { get; private set; }
 
+        public Point GetLastCoords { get; private set; }
+
         #endregion
         public BattleShipGrid()
         {
@@ -166,6 +168,8 @@ namespace BattleShipGrid
         /// <param name="e"></param>
         protected override void OnClick(EventArgs e)
         {
+            //Sauvegarde la case dans laquelle est la souris lors du click
+            GetLastCoords = GetGridCoordOfMouse().ToPoint();
             MouseEventArgs me = (MouseEventArgs)e;
             if (me.Button == System.Windows.Forms.MouseButtons.Right)
             {
