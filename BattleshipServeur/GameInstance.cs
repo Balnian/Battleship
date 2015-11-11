@@ -47,13 +47,17 @@ namespace BattleshipServer
             try
             {
                 jeu.Abort();
-                Joueur1 = null;
-                Joueur2 = null;
+                
             }
             catch (Exception)
             {
 
 
+            }
+            finally
+            {
+                Joueur1 = null;
+                Joueur2 = null;
             }
         }
 
@@ -186,6 +190,7 @@ namespace BattleshipServer
 
 
                     //Check si la partie est fini
+
 
                 }
                 catch (Exception)

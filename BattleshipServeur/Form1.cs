@@ -157,6 +157,16 @@ namespace BattleshipServer
             LockRessource.ReleaseMutex();
         }
 
+        private void BT_KillAllGames_Click(object sender, EventArgs e)
+        {
+            serv.DropAllGameInstances();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            serv.DropAllGameInstances();
+        }
+
 
 
 

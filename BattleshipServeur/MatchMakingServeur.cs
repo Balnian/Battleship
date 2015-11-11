@@ -17,6 +17,7 @@ namespace BattleshipServer
         public bool Stop { get; set; }
         private Mutex Lock;
         public static Thread Nettoyage;
+        public bool GarbageCollect = true;
 
         public MatchMakingServeur(Mutex Lock)
         {
@@ -97,7 +98,7 @@ namespace BattleshipServer
         private void cleanInstances()
         {
             int pos = 0;
-            while (true)
+            while (GarbageCollect)
             {
                 //Lock   
                 Lock.WaitOne();
@@ -122,28 +123,11 @@ namespace BattleshipServer
                 Lock.ReleaseMutex();
 
             }
-            //List<GameInstance> Rip = new List<GameInstance>();
-            ////ici
-            //foreach (GameInstance instance in GameInstances)
-            //{
-            //    if (!ConnUtility.TestClient(instance.Joueur2) && !ConnUtility.TestClient(instance.Joueur1))
-            //        Rip.Add(instance);
 
-            //    /*if ((instance.Joueur1 == null || !instance.Joueur1.Connected) && (instance.Joueur2 == null || !instance.Joueur2.Connected))
-            //    {
-
-            //            GameInstances.Remove(instance);
-            //    }
-            //    else if(instance.Joueur1 != null && instance.Joueur2 != null)
-            //        if (!testconn(instance.Joueur2) && !testconn(instance.Joueur1))
-            //            GameInstances.Remove(instance);*/
-
-            //}
-
-            //foreach (GameInstance instance in Rip)
-            //{
-            //    GameInstances.Remove(instance);
-            //}
+            //Suprime les instances de jeu restante
+            deleteRemainingGameInstances();
+            
+            
         }
 
 
@@ -154,9 +138,22 @@ namespace BattleshipServer
             GameInstances.Remove(instance);
         }
 
-        private void LogWithTime(String Message)
+       public void DropAllGameInstances()
         {
-            Console.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + ">> " + Message);
+            GarbageCollect = false;
+
         }
+
+        private void deleteRemainingGameInstances()
+       {
+           Lock.WaitOne();
+            foreach(GameInstance game in GameInstances)
+            {
+                game.StopGameInstance();
+            }
+            GameInstances.Clear();
+            Lock.ReleaseMutex();
+       }
+
     }
 }

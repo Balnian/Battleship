@@ -37,6 +37,7 @@
             this.RB_Arreter = new System.Windows.Forms.RadioButton();
             this.TV_GameInstancesView = new System.Windows.Forms.TreeView();
             this.IL_TreeView = new System.Windows.Forms.ImageList(this.components);
+            this.BT_KillAllGames = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -106,16 +107,33 @@
             this.IL_TreeView.Images.SetKeyName(0, "Instance");
             this.IL_TreeView.Images.SetKeyName(1, "Joueur");
             // 
+            // BT_KillAllGames
+            // 
+            this.BT_KillAllGames.BackColor = System.Drawing.Color.Transparent;
+            this.BT_KillAllGames.BackgroundImage = global::BattleshipServeur.Properties.Resources.BigRedButton;
+            this.BT_KillAllGames.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BT_KillAllGames.Font = new System.Drawing.Font("Impact", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BT_KillAllGames.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BT_KillAllGames.Location = new System.Drawing.Point(318, 12);
+            this.BT_KillAllGames.Name = "BT_KillAllGames";
+            this.BT_KillAllGames.Size = new System.Drawing.Size(153, 150);
+            this.BT_KillAllGames.TabIndex = 3;
+            this.BT_KillAllGames.Text = "Tuer toutes les instances de Jeux";
+            this.BT_KillAllGames.UseVisualStyleBackColor = false;
+            this.BT_KillAllGames.Click += new System.EventHandler(this.BT_KillAllGames_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(845, 390);
+            this.Controls.Add(this.BT_KillAllGames);
             this.Controls.Add(this.TV_GameInstancesView);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -132,6 +150,7 @@
         private System.Windows.Forms.RadioButton RB_Arreter;
         private System.Windows.Forms.TreeView TV_GameInstancesView;
         private System.Windows.Forms.ImageList IL_TreeView;
+        private System.Windows.Forms.Button BT_KillAllGames;
     }
 }
 
