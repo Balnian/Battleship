@@ -15,6 +15,7 @@ namespace Battleship
     {
         Jeu jeu;
         Thread thread;
+        Jeu.GameState lastStat;
         public Form1()
         {
             InitializeComponent();
@@ -49,54 +50,75 @@ namespace Battleship
 
             if (jeu != null)
             {
-                jeu.Lock.WaitOne();
+                Jeu.Lock.WaitOne();
                 switch (jeu.State)
                 {
                     case Jeu.GameState.WaitingStartGame:
                         LB_State.Text = "WaitingStartGame";
+                        lastStat = jeu.State;                        
                         break;
                     case Jeu.GameState.PlacingBoat:
                         LB_State.Text = "PlacingBoat";
+                        lastStat = jeu.State;
                         break;
                     case Jeu.GameState.WaitingTurn:
                         LB_State.Text = "WaitingTurn";
+                        lastStat = jeu.State;
                         break;
                     case Jeu.GameState.PlayingTurn:
                         LB_State.Text = "PlayingTurn";
+                        lastStat = jeu.State;
                         break;
                     case Jeu.GameState.ServerDC:
                         LB_State.Text = "ServerDC";
-//                        if (MessageBox.Show("La Connexion avec le serveur a été interrompu\nVoulez-vous Réesseyer ?",
-//                            "Problème Reseau",
-//                            MessageBoxButtons.RetryCancel,
-//                            MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
-//                        {
-////**                        //Si oui Reesseyer la connection ******
-//                        }
+                        if (jeu.State != lastStat)
+                        {
+                            lastStat = jeu.State;
+                            if (MessageBox.Show("La Connexion avec le serveur a été interrompu\nVoulez-vous Réesseyer ?",
+                                "Problème Reseau",
+                                MessageBoxButtons.RetryCancel,
+                                MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
+                            {
+                                jeu.Close();
+                                jeu = new Jeu();
+                            }
+                        }
+                        //lastStat = jeu.State;
                         break;
                     case Jeu.GameState.Victory:
                         LB_State.Text = "Victory";
-                        //MessageBox.Show("Victoire! :)",
-                        //    "État de la partie",
-                        //    MessageBoxButtons.OK,
-                        //    MessageBoxIcon.Information);
+                        if (jeu.State != lastStat)
+                        {
+                            lastStat = jeu.State;
+                            MessageBox.Show("Victoire! :)",
+                                                        "État de la partie",
+                                                        MessageBoxButtons.OK,
+                                                        MessageBoxIcon.Information);
+                        }
+                        //lastStat = jeu.State;
                         break;
                     case Jeu.GameState.Lose:
                         LB_State.Text = "Lose";
-                        //MessageBox.Show("Défaite.. :(",
-                        //    "État de la partie",
-                        //    MessageBoxButtons.OK,
-                        //    MessageBoxIcon.Information);
+                        if (jeu.State != lastStat)
+                        {
+                            lastStat = jeu.State;
+                            MessageBox.Show("Défaite.. :(",
+                                                      "État de la partie",
+                                                      MessageBoxButtons.OK,
+                                                      MessageBoxIcon.Information);
+                        }
+                        //lastStat = jeu.State;
                         break;
                     default:
                         LB_State.Text = "WTF";
-                        //MessageBox.Show("L'état du jeu est inconnue..",
-                        //    "Oups..",
-                        //    MessageBoxButtons.OK,
-                        //    MessageBoxIcon.Error);
+                        lastStat = jeu.State;
+                        MessageBox.Show("L'état du jeu est inconnue..",
+                                                    "Oups..",
+                                                    MessageBoxButtons.OK,
+                                                    MessageBoxIcon.Error);
                         break;
                 }
-                jeu.Lock.ReleaseMutex();
+                Jeu.Lock.ReleaseMutex();
             }
 
         }
