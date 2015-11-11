@@ -25,7 +25,7 @@ namespace Battleship
             Lose
         }
 
-        public Mutex Lock = new Mutex();
+        public static Mutex Lock = new Mutex();
         public GameState State { get; private set; }
         private TcpClient serveur;
         private Thread attente;
@@ -48,9 +48,19 @@ namespace Battleship
             switch (State)
             {
                 case GameState.WaitingStartGame:
-                    serveur = new TcpClient("173.178.211.254", 8080);
-                    attente = new Thread(AttendreDebutPartie);
-                    attente.Start();
+                    try
+                    {
+                        serveur = new TcpClient(/*"173.178.211.254"*/"P104-14", 8080);
+                        attente = new Thread(AttendreDebutPartie);
+                        attente.Start();
+                    }
+                    catch (Exception es)
+                    {
+                        Console.Beep(800, 700);
+                        State = GameState.ServerDC;
+                        //UpdateAction();
+                    }
+                    
                     break;
                 case GameState.PlacingBoat:
                     //L'utilisateur place ses bateau dans l'interface
@@ -147,6 +157,7 @@ namespace Battleship
                         Lock.WaitOne();
                         State = GameState.Lose;
                         Lock.ReleaseMutex();
+                        
                     }
                     else
                     {
@@ -168,10 +179,12 @@ namespace Battleship
 
         public void Close()
         {
-            attente.Abort();
-            waitingTurn.Abort();
-            serveur.Close();
-
+            if (attente != null && attente.IsAlive)
+                attente.Abort();
+            if (waitingTurn != null && waitingTurn.IsAlive)
+                waitingTurn.Abort();
+            if (serveur != null)
+                serveur.Close();
         }
     }
 }
