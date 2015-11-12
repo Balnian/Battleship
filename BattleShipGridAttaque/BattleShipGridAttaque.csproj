@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{616A6B5E-CF5C-45CB-8132-34144B1CA505}</ProjectGuid>
+    <ProjectGuid>{207B0CD5-B8D8-417A-8577-857D5A1D2940}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BattleShipGrid</RootNamespace>
-    <AssemblyName>BattleShipGrid</AssemblyName>
+    <RootNamespace>BattleShipGridAttaque</RootNamespace>
+    <AssemblyName>BattleShipGridAttaque</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,11 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BSG_Client.cs">
+    <Compile Include="BSG_Ennemy.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BSG_Client.Designer.cs">
-      <DependentUpon>BSG_Client.cs</DependentUpon>
+    <Compile Include="BSG_Ennemy.Designer.cs">
+      <DependentUpon>BSG_Ennemy.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />

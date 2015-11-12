@@ -129,9 +129,9 @@ namespace Battleship
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if (battleShipGrid1.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
+            if (BSG_Client.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
             {
-                jeu.EnvoiBateau(battleShipGrid1.PositionBateau);
+                jeu.EnvoiBateau(BSG_Client.PositionBateau);
             }
         }
 
@@ -151,7 +151,7 @@ namespace Battleship
         private void battleShipGrid1_Click(object sender, EventArgs e)
         {
             Point hitPoint;
-            if (jeu.State == Jeu.GameState.PlayingTurn && (hitPoint = battleShipGrid1.GetLastCoords) != null)
+            if (jeu.State == Jeu.GameState.PlayingTurn && (hitPoint = BSG_Client.GetLastCoords) != null)
             {
 
             }
