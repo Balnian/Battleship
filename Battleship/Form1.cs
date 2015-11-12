@@ -58,6 +58,10 @@ namespace Battleship
                         lastStat = jeu.State;                        
                         break;
                     case Jeu.GameState.PlacingBoat:
+                        if (jeu.State != lastStat)
+                        {
+                            BSG_Client.DebutPlacerBateaux();
+                        }
                         LB_State.Text = "PlacingBoat";
                         lastStat = jeu.State;
                         break;
@@ -156,14 +160,7 @@ namespace Battleship
             }
         }
 
-        private void battleShipGrid1_Click(object sender, EventArgs e)
-        {
-            Point hitPoint;
-            if (jeu.State == Jeu.GameState.PlayingTurn && (hitPoint = BSG_Client.GetLastCoords) != null)
-            {
-
-            }
-        }
+        
 
         private void battleShipGridAttaque1_OnHit(object sender, BattleShipGridAttaque.BattleShipGridAttaque.HitArgs args)
         {

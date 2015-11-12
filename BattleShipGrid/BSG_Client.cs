@@ -134,7 +134,6 @@ namespace BattleShipGrid
 
         private PosShips.Orientation OCurrentShip { get; set; }
 
-
         /// <summary>
         /// Strucure qui contient la position des bateaux
         /// </summary>
@@ -142,10 +141,6 @@ namespace BattleShipGrid
 
         public GridState EtatGrille { get; private set; }
 
-        /// <summary>
-        /// Position de la Souris après un click
-        /// </summary>
-        public Point GetLastCoords { get; private set; }
 
         #endregion
         public BattleShipGrid()
@@ -172,9 +167,9 @@ namespace BattleShipGrid
         protected override void OnClick(EventArgs e)
         {
             //Sauvegarde la case dans laquelle est la souris lors du click
-            GetLastCoords = GetGridCoordOfMouse().ToPoint();
             MouseEventArgs me = (MouseEventArgs)e;
-            if (me.Button == System.Windows.Forms.MouseButtons.Right)
+
+            if (me.Button == System.Windows.Forms.MouseButtons.Right)//Right click pour changé l'orientation
             {
                 if (OCurrentShip == PosShips.Orientation.Horizontale)
                     OCurrentShip = PosShips.Orientation.Verticale;
@@ -188,7 +183,7 @@ namespace BattleShipGrid
                     case GridState.BateauxPlacer:
                         break;
                     case GridState.None:
-                        EtatGrille = GridState.PlacementPorteAvions;
+                        //EtatGrille = GridState.PlacementPorteAvions;
                         break;
                     case GridState.PlacementPorteAvions:
                         PositionBateau.PPorteAvion = GetGridCoordOfMouse().ToPoint();
@@ -227,6 +222,12 @@ namespace BattleShipGrid
             
 
             //MessageBox.Show(PGridColor.ToString() + coords.X.ToString() + " " + coords.Y.ToString());
+        }
+
+        public void DebutPlacerBateaux()
+        {
+            if(EtatGrille==GridState.None)
+            EtatGrille = GridState.PlacementPorteAvions;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)

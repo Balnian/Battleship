@@ -122,7 +122,6 @@
             this.BSG_Client.SousMarin = global::Battleship.Properties.Resources.SousMarin;
             this.BSG_Client.TabIndex = 5;
             this.BSG_Client.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
-            this.BSG_Client.Click += new System.EventHandler(this.battleShipGrid1_Click);
             // 
             // BSG_Enemy
             // 
@@ -131,7 +130,6 @@
             this.BSG_Enemy.Croiseur = global::Battleship.Properties.Resources.Croiseur;
             this.BSG_Enemy.GridColor = System.Drawing.Color.Black;
             this.BSG_Enemy.GridNumber = ((uint)(10u));
-            this.BSG_Enemy.hitList = new System.Collections.Generic.List<BattleShipShared.Packet.Hit>();
             this.BSG_Enemy.InteriorOfSelection = System.Drawing.Color.Red;
             this.BSG_Enemy.Location = new System.Drawing.Point(349, 39);
             this.BSG_Enemy.Name = "BSG_Enemy";
@@ -157,6 +155,7 @@
             this.Controls.Add(this.BT_Connection);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.LB_State);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
