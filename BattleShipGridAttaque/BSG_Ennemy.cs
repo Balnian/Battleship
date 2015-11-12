@@ -224,11 +224,14 @@ namespace BattleShipGridAttaque
 
         private void DrawShips()
         {
-            DrawSingleShip(Torpilleur, PositionBateau.PTorpilleur, PositionBateau.OTorpilleur, 2);
-            DrawSingleShip(SousMarin, PositionBateau.PSousMarin, PositionBateau.OSousMarin, 3);
-            DrawSingleShip(ContreTorpilleur, PositionBateau.PContreTorpilleur, PositionBateau.OContreTorpilleur,3);
-            DrawSingleShip(Croiseur, PositionBateau.PCroiseur, PositionBateau.OCroiseur, 4);
-            DrawSingleShip(PorteAvions, PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, 5);
+            if (PositionBateau != null)
+            {
+                DrawSingleShip(Torpilleur, PositionBateau.PTorpilleur, PositionBateau.OTorpilleur, 2);
+                DrawSingleShip(SousMarin, PositionBateau.PSousMarin, PositionBateau.OSousMarin, 3);
+                DrawSingleShip(ContreTorpilleur, PositionBateau.PContreTorpilleur, PositionBateau.OContreTorpilleur, 3);
+                DrawSingleShip(Croiseur, PositionBateau.PCroiseur, PositionBateau.OCroiseur, 4);
+                DrawSingleShip(PorteAvions, PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, 5);
+            }
         }
 
         private void DrawSingleShip(Image img, Point location, PosShips.Orientation orientation, int ShipSize)

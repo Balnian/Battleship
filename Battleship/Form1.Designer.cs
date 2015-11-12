@@ -38,6 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.BSG_Client = new BattleShipGrid.BattleShipGrid();
+            this.battleShipGridAttaque1 = new BattleShipGridAttaque.BattleShipGridAttaque();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,20 +90,20 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(400, 8);
+            this.label2.Location = new System.Drawing.Point(389, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(194, 28);
+            this.label2.Size = new System.Drawing.Size(220, 28);
             this.label2.TabIndex = 8;
-            this.label2.Text = "Position Radar";
+            this.label2.Text = "Position Ennemie";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(325, -8);
+            this.pictureBox1.Location = new System.Drawing.Point(325, 39);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(10, 405);
+            this.pictureBox1.Size = new System.Drawing.Size(10, 300);
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
@@ -123,11 +124,31 @@
             this.BSG_Client.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
             this.BSG_Client.Click += new System.EventHandler(this.battleShipGrid1_Click);
             // 
+            // battleShipGridAttaque1
+            // 
+            this.battleShipGridAttaque1.BorderOfSelection = System.Drawing.Color.Transparent;
+            this.battleShipGridAttaque1.ContreTorpilleur = null;
+            this.battleShipGridAttaque1.Croiseur = null;
+            this.battleShipGridAttaque1.GridColor = System.Drawing.Color.Black;
+            this.battleShipGridAttaque1.GridNumber = ((uint)(10u));
+            this.battleShipGridAttaque1.hitList = null;
+            this.battleShipGridAttaque1.InteriorOfSelection = System.Drawing.Color.Red;
+            this.battleShipGridAttaque1.Location = new System.Drawing.Point(349, 39);
+            this.battleShipGridAttaque1.Name = "battleShipGridAttaque1";
+            this.battleShipGridAttaque1.PorteAvions = null;
+            this.battleShipGridAttaque1.PositionBateau = null;
+            this.battleShipGridAttaque1.Size = new System.Drawing.Size(300, 300);
+            this.battleShipGridAttaque1.SousMarin = null;
+            this.battleShipGridAttaque1.TabIndex = 10;
+            this.battleShipGridAttaque1.Torpilleur = null;
+            this.battleShipGridAttaque1.WaitingForInput = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(661, 392);
+            this.Controls.Add(this.battleShipGridAttaque1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -155,6 +176,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private BattleShipGridAttaque.BattleShipGridAttaque battleShipGridAttaque1;
 
     }
 }
