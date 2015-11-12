@@ -36,6 +36,24 @@ namespace BattleShipGridAttaque
 
         }
 
+        public class HitArgs : EventArgs
+        {
+            private Point point;
+            public HitArgs(Point location)
+            {
+                point = location;
+            }
+
+            public Point Location
+            {
+                get
+                {
+                    return point;
+                }
+                
+            }
+        }
+
         #region Properties
 
         /// <summary>
@@ -140,12 +158,18 @@ namespace BattleShipGridAttaque
         /// </summary>
         public bool WaitingForInput { get; set; }
 
-        public List<Hit> hitList { get; set; }
+        private List<Hit> phitList = new List<Hit>();
+        public List<Hit> hitList { get { return phitList; } set { phitList = value; } }
 
         #endregion
+
+        public delegate void HitHandler(object sender, HitArgs args);
+        public event HitHandler OnHit;
+
         public BattleShipGridAttaque()
         {
             InitializeComponent();
+            
             //DoubleBuffered = true;
             //this.SetStyle(ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             //this.SetStyle(ControlStyles.AllPaintingInWmPaint)
@@ -163,25 +187,36 @@ namespace BattleShipGridAttaque
         /// <param name="e"></param>
         protected override void OnClick(EventArgs e)
         {
-            //Sauvegarde la case dans laquelle est la souris lors du click
-            GetLastCoords = GetGridCoordOfMouse().ToPoint();
+            if (WaitingForInput)
+            {
+                Point coords = GetGridCoordOfMouse().ToPoint();
+                bool exist = false;
+                //Check si il y a déja un hit
+                for (int i = 0; i < hitList.Count;i++ )
+                {
+                    Hit item = hitList.ElementAt(i);
+                    if (item != null)
+                        if (item.Location.X == coords.X && item.Location.Y == coords.Y)
+                        {
+                            exist = true;
+                            break;
+                        }
 
-            Refresh();
-            /*if (EtatGrille < GridState.PlacementTorpilleur)
-                EtatGrille++;*/
-            FPoint coords = GetGridCoordOfMouse();
-            DrawSelection(coords);
-            //MessageBox.Show(PGridColor.ToString() + coords.X.ToString() + " " + coords.Y.ToString());
+                }
+
+                if (!exist)
+                    OnHit(this,new HitArgs(coords));
+            }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
-            Refresh();
+            /*Refresh();
             FPoint coords = GetGridCoordOfMouse();
 
-            DrawSelection(coords);
+            DrawSelection(coords);*/
         }
 
         /// <summary>
@@ -216,11 +251,21 @@ namespace BattleShipGridAttaque
             DrawGrid();
             FPoint coords = GetGridCoordOfMouse();
             DrawShips();
+            DrawShots();
 
             // DrawRect(Color.Aquamarine, Color.Chocolate, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
         }
 
         #region Draw
+
+        private void DrawShots()
+        {
+            if(hitList!=null)
+            foreach (Hit item in hitList)
+	        {              
+		        DrawHit(item.Location,((item.Etat!=Hit.HitState.Flop)?Color.Red:Color.Blue));
+	        }
+        }
 
         private void DrawShips()
         {
@@ -259,6 +304,19 @@ namespace BattleShipGridAttaque
             //BufferedGraphicsContext graph = BufferedGraphicsManager.Current;
             graph.DrawImage(img, x, y, width, height);
             //MessageBox.Show(x.)
+
+        }
+
+        private void DrawHit(Point coords,Color couleur)
+        {
+            if (coords.X < 9 && coords.Y < 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
+            else if (coords.X >= 9 && coords.Y >= 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, Width - coords.X * GridRectWidth, Height - coords.Y * GridRectHeight);
+            else if (coords.X >= 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, Width - coords.X * GridRectWidth, GridRectHeight);
+            else if (coords.Y >= 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, Height - coords.Y * GridRectHeight);
 
         }
         /// <summary>

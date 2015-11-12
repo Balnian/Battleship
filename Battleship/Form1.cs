@@ -67,6 +67,8 @@ namespace Battleship
                         break;
                     case Jeu.GameState.PlayingTurn:
                         LB_State.Text = "PlayingTurn";
+                        if (jeu.State != lastStat)
+                            BSG_Enemy.WaitingForInput = true;
                         lastStat = jeu.State;
                         break;
                     case Jeu.GameState.ServerDC:
@@ -85,6 +87,10 @@ namespace Battleship
                                 jeu = new Jeu();
                                 Jeu.Lock.WaitOne();
                             }
+                            else
+                            {
+                                this.Close();
+                            }
                         }
                         //lastStat = jeu.State;
                         break;
@@ -93,6 +99,7 @@ namespace Battleship
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
+                            BSG_Enemy.PositionBateau = jeu.EnemyShips;
                             MessageBox.Show("Victoire! :)",
                                                         "État de la partie",
                                                         MessageBoxButtons.OK,
@@ -105,6 +112,7 @@ namespace Battleship
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
+                            BSG_Enemy.PositionBateau = jeu.EnemyShips;
                             MessageBox.Show("Défaite.. :(",
                                                       "État de la partie",
                                                       MessageBoxButtons.OK,
@@ -155,6 +163,12 @@ namespace Battleship
             {
 
             }
+        }
+
+        private void battleShipGridAttaque1_OnHit(object sender, BattleShipGridAttaque.BattleShipGridAttaque.HitArgs args)
+        {
+            BSG_Enemy.WaitingForInput = false;
+            jeu.PlayingTurn(args.Location,BSG_Enemy.hitList);
         }
     }
 }

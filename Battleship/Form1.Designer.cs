@@ -38,7 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.BSG_Client = new BattleShipGrid.BattleShipGrid();
-            this.battleShipGridAttaque1 = new BattleShipGridAttaque.BattleShipGridAttaque();
+            this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,31 +124,32 @@
             this.BSG_Client.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
             this.BSG_Client.Click += new System.EventHandler(this.battleShipGrid1_Click);
             // 
-            // battleShipGridAttaque1
+            // BSG_Enemy
             // 
-            this.battleShipGridAttaque1.BorderOfSelection = System.Drawing.Color.Transparent;
-            this.battleShipGridAttaque1.ContreTorpilleur = null;
-            this.battleShipGridAttaque1.Croiseur = null;
-            this.battleShipGridAttaque1.GridColor = System.Drawing.Color.Black;
-            this.battleShipGridAttaque1.GridNumber = ((uint)(10u));
-            this.battleShipGridAttaque1.hitList = null;
-            this.battleShipGridAttaque1.InteriorOfSelection = System.Drawing.Color.Red;
-            this.battleShipGridAttaque1.Location = new System.Drawing.Point(349, 39);
-            this.battleShipGridAttaque1.Name = "battleShipGridAttaque1";
-            this.battleShipGridAttaque1.PorteAvions = null;
-            this.battleShipGridAttaque1.PositionBateau = null;
-            this.battleShipGridAttaque1.Size = new System.Drawing.Size(300, 300);
-            this.battleShipGridAttaque1.SousMarin = null;
-            this.battleShipGridAttaque1.TabIndex = 10;
-            this.battleShipGridAttaque1.Torpilleur = null;
-            this.battleShipGridAttaque1.WaitingForInput = false;
+            this.BSG_Enemy.BorderOfSelection = System.Drawing.Color.Transparent;
+            this.BSG_Enemy.ContreTorpilleur = global::Battleship.Properties.Resources.contretorpilleur;
+            this.BSG_Enemy.Croiseur = global::Battleship.Properties.Resources.Croiseur;
+            this.BSG_Enemy.GridColor = System.Drawing.Color.Black;
+            this.BSG_Enemy.GridNumber = ((uint)(10u));
+            this.BSG_Enemy.hitList = null;
+            this.BSG_Enemy.InteriorOfSelection = System.Drawing.Color.Red;
+            this.BSG_Enemy.Location = new System.Drawing.Point(349, 39);
+            this.BSG_Enemy.Name = "BSG_Enemy";
+            this.BSG_Enemy.PorteAvions = global::Battleship.Properties.Resources.PorteAvions;
+            this.BSG_Enemy.PositionBateau = null;
+            this.BSG_Enemy.Size = new System.Drawing.Size(300, 300);
+            this.BSG_Enemy.SousMarin = global::Battleship.Properties.Resources.SousMarin;
+            this.BSG_Enemy.TabIndex = 10;
+            this.BSG_Enemy.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
+            this.BSG_Enemy.WaitingForInput = false;
+            this.BSG_Enemy.OnHit += new BattleShipGridAttaque.BattleShipGridAttaque.HitHandler(this.battleShipGridAttaque1_OnHit);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(661, 392);
-            this.Controls.Add(this.battleShipGridAttaque1);
+            this.Controls.Add(this.BSG_Enemy);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -176,7 +177,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private BattleShipGridAttaque.BattleShipGridAttaque battleShipGridAttaque1;
+        private BattleShipGridAttaque.BattleShipGridAttaque BSG_Enemy;
 
     }
 }
