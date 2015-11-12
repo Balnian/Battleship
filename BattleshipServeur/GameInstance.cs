@@ -143,7 +143,7 @@ namespace BattleshipServer
                     catch (Exception)
                     {
                         //Si le Joueur présent ne répond plus
-                        if (!ConnUtility.TestClient((J1Joue ? Joueur1 : Joueur2)))
+                        if (!ConnUtility.TestClient((!J1Joue ? Joueur1 : Joueur2)))
                         {
                             //L'autre joueur gagne
                             CommUtility.SerializeAndSend((!J1Joue ? StreamJ1 : StreamJ2), new Result { Etat = Result.ResultState.Victory, EnemyShips = (J1Joue ? GrilleJ1 : GrilleJ2) });
@@ -167,6 +167,32 @@ namespace BattleshipServer
                     {
                         nouveauHit.Etat = ProcessHit(((J1Joue) ? HitJoueur2 : HitJoueur1), ((J1Joue) ? GrilleJ2 : GrilleJ1));
                         nouveauHit.Location = ((J1Joue) ? HitJoueur2 : HitJoueur1).Last().Location;
+
+                        if (nouveauHit.Etat == Hit.HitState.CoulerPorteAvion)
+                        {
+                            LogConsole.Log((J1Joue ? "Joueur1" : "Joueur2") + " à couler le Porte-Avion adverse");
+                        }                            
+                        else if (nouveauHit.Etat == Hit.HitState.CoulerCroiseur)
+                        {
+                            LogConsole.Log((J1Joue ? "Joueur1" : "Joueur2") + " à couler le Croiseur adverse");
+                        }                            
+                        else if (nouveauHit.Etat == Hit.HitState.CoulerContreTorpilleur)
+                        {
+                            LogConsole.Log((J1Joue ? "Joueur1" : "Joueur2") + " à couler le Contre-Torpilleur adverse");
+                        }
+                        else if (nouveauHit.Etat == Hit.HitState.CoulerSousMarin)
+                        {
+                            LogConsole.Log((J1Joue ? "Joueur1" : "Joueur2") + " à couler le Sous-Marin adverse");
+                        }
+                        else if (nouveauHit.Etat == Hit.HitState.CoulerTorpilleur)
+                        {
+                            LogConsole.Log((J1Joue ? "Joueur1" : "Joueur2") + " à couler le Torpilleur adverse");
+                        }
+                        else
+                        {
+                            LogConsole.Log((J1Joue ? "Joueur1" : "Joueur2") + " " + (nouveauHit.Etat != Hit.HitState.Flop ? "Hit" : "Flop") + " : X=" + nouveauHit.Location.X + ", Y=" + nouveauHit.Location.Y);
+                        }
+
 
                         
                     }
@@ -253,10 +279,12 @@ namespace BattleshipServer
 
 
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     //Une Shit load de Handling d'erreur
-                    throw;
+
+                    LogConsole.Log(e.Message);
+                    partieFini = true;
                 }
 
             }
@@ -278,6 +306,12 @@ namespace BattleshipServer
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Hitlist">sdf</param>
+        /// <param name="GrilleAdverse">un autre</param>
+        /// <returns>banane</returns>
         private Hit.HitState ProcessHit(List<Hit> Hitlist, PosShips GrilleAdverse)
         {
             //Porte Avion
@@ -342,14 +376,14 @@ namespace BattleshipServer
         {
             if (orient == PosShips.Orientation.Horizontale)
             {
-                if (Hit.X >= location.X && Hit.X <= location.X + longueur && Hit.Y == location.Y)
+                if (Hit.X >= location.X && Hit.X <= location.X + longueur-1 && Hit.Y == location.Y)
                     return true;
                 else
                     return false;
             }
             else
             {
-                if (Hit.Y >= location.Y && Hit.Y <= location.Y + longueur && Hit.X == location.X)
+                if (Hit.Y >= location.Y && Hit.Y <= location.Y + longueur-1 && Hit.X == location.X)
                     return true;
                 else
                     return false;
@@ -360,14 +394,14 @@ namespace BattleshipServer
         {
             if (orient == PosShips.Orientation.Horizontale)
             {
-                if (Hit.X >= location.X && Hit.X <= location.X + longueur && Hit.Y == location.Y)
+                if (Hit.X >= location.X && Hit.X <= location.X + longueur-1 && Hit.Y == location.Y)
                     return true;
                 else
                     return false;
             }
             else
             {
-                if (Hit.Y >= location.Y && Hit.Y <= location.Y + longueur && Hit.X == location.X)
+                if (Hit.Y >= location.Y && Hit.Y <= location.Y + longueur-1 && Hit.X == location.X)
                     return true;
                 else
                     return false;

@@ -30,8 +30,8 @@ namespace BattleshipServer
         {
             InitializeComponent();
             AllocConsole();
-            LockRessource = new Mutex();
-            serv = new MatchMakingServeur(LockRessource);
+            serv = new MatchMakingServeur();
+            LockRessource = MatchMakingServeur.Lock;
             Serveur = new Thread(serv.ListenServeur);
             timer1.Start();
         }
@@ -166,6 +166,7 @@ namespace BattleshipServer
         {
             serv.DropAllGameInstances();
         }
+        
 
 
 

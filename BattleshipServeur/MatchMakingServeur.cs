@@ -15,13 +15,13 @@ namespace BattleshipServer
         public static List<GameInstance> GameInstances = new List<GameInstance>();
 
         public bool Stop { get; set; }
-        private Mutex Lock;
+        public static Mutex Lock = new Mutex();
         public static Thread Nettoyage;
         public bool GarbageCollect = true;
 
-        public MatchMakingServeur(Mutex Lock)
+        public MatchMakingServeur()
         {
-            this.Lock = Lock;
+            
             Nettoyage = new Thread(cleanInstances);//100ms / Instances
             Nettoyage.Start();
         }
@@ -130,7 +130,14 @@ namespace BattleshipServer
             
         }
 
+        public int getInstanceNumber(GameInstance instance)
+        {
+            Lock.WaitOne();
+            int Numb = GameInstances.IndexOf(instance);
+            Lock.ReleaseMutex();
+            return Numb;
 
+        }
 
         private void deleteInstance(GameInstance instance)
         {
