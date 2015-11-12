@@ -168,6 +168,65 @@ namespace BattleshipServer
                         nouveauHit.Etat = ProcessHit(((J1Joue) ? HitJoueur2 : HitJoueur1), ((J1Joue) ? GrilleJ2 : GrilleJ1));
                         nouveauHit.Location = ((J1Joue) ? HitJoueur2 : HitJoueur1).Last().Location;
 
+                        
+                    }
+
+
+                    //Check si la partie est fini                 
+                    if(aGagner(HitJoueur2,GrilleJ2))
+                    {
+                        //Si Joueur 1 à gagner
+                        try
+                        {
+                            CommUtility.SerializeAndSend(StreamJ1, new Result { EnemyShips = GrilleJ2, Etat = Result.ResultState.Victory });
+                            
+
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                CommUtility.SerializeAndSend(StreamJ2, new Result { EnemyShips = GrilleJ1, Etat = Result.ResultState.Lose });
+                            }
+                            catch (Exception)
+                            {
+                                
+                                
+                            }
+                            finally
+                            {
+                                partieFini = true;
+                            }
+                        }
+                    }                       
+                    else if (aGagner(HitJoueur1,GrilleJ1))
+                    {
+                        //Si Joueur 2 à gagner
+                        try
+                        {
+                            CommUtility.SerializeAndSend(StreamJ2, new Result { EnemyShips = GrilleJ1, Etat = Result.ResultState.Victory });
+
+
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                CommUtility.SerializeAndSend(StreamJ1, new Result { EnemyShips = GrilleJ2, Etat = Result.ResultState.Lose });
+                            }
+                            catch (Exception)
+                            {
+
+                                
+                            }
+                            finally
+                            {
+                                partieFini = true;
+                            }
+                        }
+                    }
+                    else
+                    {
                         //Envoie l'update aux joueurs
 
                         try
@@ -186,10 +245,11 @@ namespace BattleshipServer
 
                             LogConsole.Log("Erreur lors de l'envoie des hit: " + e.Message);
                         }
+                        finally
+                        {
+                            J1Joue = !J1Joue;
+                        }
                     }
-
-
-                    //Check si la partie est fini
 
 
                 }
@@ -202,7 +262,7 @@ namespace BattleshipServer
             }
 
 
-
+            StopGameInstance();
 
             /*recevoir tableau*/
 
@@ -312,6 +372,16 @@ namespace BattleshipServer
                 else
                     return false;
             }
+        }
+
+        private bool aGagner(List<Hit> Hitlist, PosShips GrilleAdverse)
+        {
+            //Vérifie si chaque bateau à été couler
+            return Hitlist.Count(touche => containsHit(touche.Location, GrilleAdverse.PPorteAvion, GrilleAdverse.OPorteAvion, 5)) == 5 &&
+                Hitlist.Count(touche => containsHit(touche.Location, GrilleAdverse.PCroiseur, GrilleAdverse.OCroiseur, 4)) == 4 &&
+                Hitlist.Count(touche => containsHit(touche.Location, GrilleAdverse.PContreTorpilleur, GrilleAdverse.OContreTorpilleur, 3)) == 3 &&
+                Hitlist.Count(touche => containsHit(touche.Location, GrilleAdverse.PSousMarin, GrilleAdverse.OSousMarin, 3)) == 3 &&
+                Hitlist.Count(touche => containsHit(touche.Location, GrilleAdverse.PTorpilleur, GrilleAdverse.OTorpilleur, 2)) == 2;
         }
 
     }
