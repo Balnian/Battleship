@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -80,6 +81,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BattleShipGridAttaque\BattleShipGridAttaque.csproj">
+      <Project>{207B0CD5-B8D8-417A-8577-857D5A1D2940}</Project>
+      <Name>BattleShipGridAttaque</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BattleShipGrid\BattleShipGrid.csproj">
       <Project>{616a6b5e-cf5c-45cb-8132-34144b1ca505}</Project>
       <Name>BattleShipGrid</Name>

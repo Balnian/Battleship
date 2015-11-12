@@ -31,6 +31,7 @@ namespace Battleship
         private Thread attente;
         private Thread waitingTurn;
         private List<Hit> listHit = new List<Hit>();
+        public PosShips EnemyShips = null;
         //private volatile bool gameStarted = false;
 
         public Jeu()
@@ -175,6 +176,71 @@ namespace Battleship
                     UpdateAction();
                 }
             }
+        }
+
+        public delegate void func(Hit leH);
+        public void PlayingTurn(Point point, func AjoutHit)
+        {
+            CommUtility.SerializeAndSend(serveur.GetStream(), new Hit { Etat = Hit.HitState.NoAction, Location = point });
+
+            (new Thread(() => waitHitConfirm(AjoutHit))).Start();
+
+
+        }
+
+
+
+        private void waitHitConfirm(func AjoutHit)
+        {
+            object carry = null;
+            try
+            {
+                carry = CommUtility.ReadAndDeserialize(serveur.GetStream());
+                AjoutHit((Hit)carry);
+                Lock.WaitOne();
+                State = GameState.WaitingTurn;
+                Lock.ReleaseMutex();
+                UpdateAction();
+
+            }
+            catch(Exception e)
+            {
+                try
+                {
+                    if (carry != null)
+                    {
+                        Result result = (Result)carry;
+                        if(result.Etat == Result.ResultState.Victory)
+                        {
+                            Lock.WaitOne();
+                            State = GameState.Victory;
+                            EnemyShips = result.EnemyShips;
+                            Lock.ReleaseMutex();
+                            UpdateAction();
+
+                        }
+                        else
+                        {
+                            Lock.WaitOne();
+                            State = GameState.Lose;
+                            EnemyShips = result.EnemyShips;
+                            Lock.ReleaseMutex();
+                            UpdateAction();
+                        }
+                    }
+                    else
+                        throw;
+                    
+                }
+                catch (Exception)
+                {
+                    Lock.WaitOne();
+                    State = GameState.ServerDC;
+                    Lock.ReleaseMutex();
+                    UpdateAction();
+                }
+            }
+            
         }
 
         public void Close()

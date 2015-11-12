@@ -58,6 +58,10 @@ namespace Battleship
                         lastStat = jeu.State;                        
                         break;
                     case Jeu.GameState.PlacingBoat:
+                        if (jeu.State != lastStat)
+                        {
+                            BSG_Client.DebutPlacerBateaux();
+                        }
                         LB_State.Text = "PlacingBoat";
                         lastStat = jeu.State;
                         break;
@@ -67,6 +71,8 @@ namespace Battleship
                         break;
                     case Jeu.GameState.PlayingTurn:
                         LB_State.Text = "PlayingTurn";
+                        if (jeu.State != lastStat)
+                            BSG_Enemy.WaitingForInput = true;
                         lastStat = jeu.State;
                         break;
                     case Jeu.GameState.ServerDC:
@@ -85,6 +91,10 @@ namespace Battleship
                                 jeu = new Jeu();
                                 Jeu.Lock.WaitOne();
                             }
+                            else
+                            {
+                                this.Close();
+                            }
                         }
                         //lastStat = jeu.State;
                         break;
@@ -93,6 +103,7 @@ namespace Battleship
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
+                            BSG_Enemy.PositionBateau = jeu.EnemyShips;
                             MessageBox.Show("Victoire! :)",
                                                         "État de la partie",
                                                         MessageBoxButtons.OK,
@@ -105,6 +116,7 @@ namespace Battleship
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
+                            BSG_Enemy.PositionBateau = jeu.EnemyShips;
                             MessageBox.Show("Défaite.. :(",
                                                       "État de la partie",
                                                       MessageBoxButtons.OK,
@@ -129,9 +141,9 @@ namespace Battleship
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if (battleShipGrid1.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
+            if (BSG_Client.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
             {
-                jeu.EnvoiBateau(battleShipGrid1.PositionBateau);
+                jeu.EnvoiBateau(BSG_Client.PositionBateau);
             }
         }
 
@@ -148,13 +160,12 @@ namespace Battleship
             }
         }
 
-        private void battleShipGrid1_Click(object sender, EventArgs e)
-        {
-            Point hitPoint;
-            if (jeu.State == Jeu.GameState.PlayingTurn && (hitPoint = battleShipGrid1.GetLastCoords) != null)
-            {
+        
 
-            }
+        private void battleShipGridAttaque1_OnHit(object sender, BattleShipGridAttaque.BattleShipGridAttaque.HitArgs args)
+        {
+            BSG_Enemy.WaitingForInput = false;
+            jeu.PlayingTurn(args.Location,BSG_Enemy.AddHit);
         }
     }
 }

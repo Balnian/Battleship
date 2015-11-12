@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleShipShared", "BattleS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipServeur", "BattleshipServeur\BattleshipServeur.csproj", "{92ADE626-BF8E-48F0-8AA6-8C91EB67A706}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleShipGridAttaque", "BattleShipGridAttaque\BattleShipGridAttaque.csproj", "{207B0CD5-B8D8-417A-8577-857D5A1D2940}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{92ADE626-BF8E-48F0-8AA6-8C91EB67A706}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92ADE626-BF8E-48F0-8AA6-8C91EB67A706}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92ADE626-BF8E-48F0-8AA6-8C91EB67A706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207B0CD5-B8D8-417A-8577-857D5A1D2940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207B0CD5-B8D8-417A-8577-857D5A1D2940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207B0CD5-B8D8-417A-8577-857D5A1D2940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207B0CD5-B8D8-417A-8577-857D5A1D2940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
