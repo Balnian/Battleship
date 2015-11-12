@@ -158,8 +158,17 @@ namespace BattleShipGridAttaque
         /// </summary>
         public bool WaitingForInput { get; set; }
 
-        private List<Hit> phitList = new List<Hit>();
-        public List<Hit> hitList { get { return phitList; } set { phitList = value; } }
+        //private List<Hit> phitList = new List<Hit>();
+        
+        public List<Hit> hitList = new List<Hit>();
+        //{ 
+        //    get { 
+        //        return phitList; 
+        //    } 
+        //    set { 
+        //        phitList = value; 
+        //    } 
+        //}
 
         #endregion
 
@@ -169,7 +178,7 @@ namespace BattleShipGridAttaque
         public BattleShipGridAttaque()
         {
             InitializeComponent();
-            
+            hitList = new List<Hit>();
             //DoubleBuffered = true;
             //this.SetStyle(ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             //this.SetStyle(ControlStyles.AllPaintingInWmPaint)
@@ -192,7 +201,7 @@ namespace BattleShipGridAttaque
                 Point coords = GetGridCoordOfMouse().ToPoint();
                 bool exist = false;
                 //Check si il y a déja un hit
-                for (int i = 0; i < hitList.Count;i++ )
+                for (int i = 0; hitList!=null && i < hitList.Count;i++ )
                 {
                     Hit item = hitList.ElementAt(i);
                     if (item != null)
@@ -249,7 +258,6 @@ namespace BattleShipGridAttaque
             base.OnPaint(pe);
             //Dessine la Grille
             DrawGrid();
-            FPoint coords = GetGridCoordOfMouse();
             DrawShips();
             DrawShots();
 

@@ -131,7 +131,7 @@
             this.BSG_Enemy.Croiseur = global::Battleship.Properties.Resources.Croiseur;
             this.BSG_Enemy.GridColor = System.Drawing.Color.Black;
             this.BSG_Enemy.GridNumber = ((uint)(10u));
-            this.BSG_Enemy.hitList = null;
+            this.BSG_Enemy.hitList = new System.Collections.Generic.List<BattleShipShared.Packet.Hit>();
             this.BSG_Enemy.InteriorOfSelection = System.Drawing.Color.Red;
             this.BSG_Enemy.Location = new System.Drawing.Point(349, 39);
             this.BSG_Enemy.Name = "BSG_Enemy";
