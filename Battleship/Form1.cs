@@ -79,8 +79,11 @@ namespace Battleship
                                 MessageBoxButtons.RetryCancel,
                                 MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
                             {
+                                lastStat = Jeu.GameState.WaitingStartGame;
                                 jeu.Close();
+                                Jeu.Lock.ReleaseMutex();
                                 jeu = new Jeu();
+                                Jeu.Lock.WaitOne();
                             }
                         }
                         //lastStat = jeu.State;
@@ -119,6 +122,7 @@ namespace Battleship
                         break;
                 }
                 Jeu.Lock.ReleaseMutex();
+                
             }
 
         }
