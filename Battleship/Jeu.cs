@@ -178,22 +178,25 @@ namespace Battleship
             }
         }
 
-        public void PlayingTurn(Point point,List<Hit> Hitlist)
+        public delegate void func(Hit leH);
+        public void PlayingTurn(Point point, func AjoutHit)
         {
             CommUtility.SerializeAndSend(serveur.GetStream(), new Hit { Etat = Hit.HitState.NoAction, Location = point });
 
-            (new Thread(()=>waitHitConfirm(Hitlist))).Start();
+            (new Thread(() => waitHitConfirm(AjoutHit))).Start();
 
 
         }
 
-        private void waitHitConfirm(List<Hit> Hitlist)
+
+
+        private void waitHitConfirm(func AjoutHit)
         {
             object carry = null;
             try
             {
                 carry = CommUtility.ReadAndDeserialize(serveur.GetStream());
-                Hitlist.Add((Hit)carry);
+                AjoutHit((Hit)carry);
                 Lock.WaitOne();
                 State = GameState.WaitingTurn;
                 Lock.ReleaseMutex();

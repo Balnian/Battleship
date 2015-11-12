@@ -168,7 +168,7 @@ namespace Battleship
         private void battleShipGridAttaque1_OnHit(object sender, BattleShipGridAttaque.BattleShipGridAttaque.HitArgs args)
         {
             BSG_Enemy.WaitingForInput = false;
-            jeu.PlayingTurn(args.Location,BSG_Enemy.hitList);
+            jeu.PlayingTurn(args.Location,BSG_Enemy.AddHit);
         }
     }
 }

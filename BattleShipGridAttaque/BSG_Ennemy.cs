@@ -228,6 +228,12 @@ namespace BattleShipGridAttaque
             DrawSelection(coords);*/
         }
 
+        public void AddHit(Hit leH)
+        {
+            hitList.Add(leH);
+            Refresh();
+        }
+
         /// <summary>
         /// retourne les coordonnées dans la grille où se trouve la souris
         /// </summary>
@@ -258,8 +264,10 @@ namespace BattleShipGridAttaque
             base.OnPaint(pe);
             //Dessine la Grille
             DrawGrid();
-            DrawShips();
+            
             DrawShots();
+
+            DrawShips();
 
             // DrawRect(Color.Aquamarine, Color.Chocolate, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
         }
