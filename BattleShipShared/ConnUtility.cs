@@ -18,7 +18,7 @@ namespace BattleShipShared
                     return false;
                 try
                 {
-                    return !(conn.Client.Poll(50, SelectMode.SelectRead) && conn.Client.Available == 0);
+                    return !(conn.Client.Poll(150, SelectMode.SelectRead) && conn.Client.Available == 0);
                 }
                 catch (SocketException) { return false; }
 
