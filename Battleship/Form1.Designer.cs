@@ -41,7 +41,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.BSG_Client = new BattleShipGrid.BattleShipGrid();
             this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
-            this.LB_Debug = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -70,7 +69,7 @@
             this.BTN_EnvoyerBateaux.TabIndex = 3;
             this.BTN_EnvoyerBateaux.Text = "Envoyer Bateau";
             this.BTN_EnvoyerBateaux.UseVisualStyleBackColor = true;
-            this.BTN_EnvoyerBateaux.Click += new System.EventHandler(this.button1_Click_1);
+            this.BTN_EnvoyerBateaux.Click += new System.EventHandler(this.BTN_EnvoyerBateau_Click_1);
             // 
             // BTN_Connection
             // 
@@ -167,21 +166,11 @@
             this.BSG_Enemy.WaitingForInput = false;
             this.BSG_Enemy.OnHit += new BattleShipGridAttaque.BattleShipGridAttaque.HitHandler(this.battleShipGridAttaque1_OnHit);
             // 
-            // LB_Debug
-            // 
-            this.LB_Debug.AutoSize = true;
-            this.LB_Debug.Location = new System.Drawing.Point(259, 380);
-            this.LB_Debug.Name = "LB_Debug";
-            this.LB_Debug.Size = new System.Drawing.Size(12, 13);
-            this.LB_Debug.TabIndex = 14;
-            this.LB_Debug.Text = "x";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(661, 448);
-            this.Controls.Add(this.LB_Debug);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.BSG_Enemy);
             this.Controls.Add(this.pictureBox1);
@@ -216,7 +205,6 @@
         private BattleShipGridAttaque.BattleShipGridAttaque BSG_Enemy;
         private System.Windows.Forms.TextBox TB_IpAdress;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label LB_Debug;
 
     }
 }
