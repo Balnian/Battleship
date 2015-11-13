@@ -25,27 +25,27 @@ namespace BattleShipGrid
             }
             public FPoint(Point p)
             {
-                X=p.X;
-                Y=p.Y;
+                X = p.X;
+                Y = p.Y;
             }
 
             public Point ToPoint()
             {
-                return new Point((int)X,(int)Y);
+                return new Point((int)X, (int)Y);
             }
-            
+
         }
 
         public enum GridState
-	    {
-	            BateauxPlacer,
-                None,                
-                PlacementPorteAvions,
-                PlacementCroiseur ,
-                PlacementContreTorpilleur,
-                PlacementSousMarin ,
-                PlacementTorpilleur,
-	    }
+        {
+            BateauxPlacer,
+            None,
+            PlacementPorteAvions,
+            PlacementCroiseur,
+            PlacementContreTorpilleur,
+            PlacementSousMarin,
+            PlacementTorpilleur,
+        }
 
         #region Properties
 
@@ -57,13 +57,14 @@ namespace BattleShipGrid
         /// <summary>
         /// Interface public pour le nombre de case de la grille
         /// </summary>
-        public uint GridNumber 
+        public uint GridNumber
         {
-            get{return PGridNumber;}
-            set{
-                if(value>0)
+            get { return PGridNumber; }
+            set
+            {
+                if (value > 0)
                     PGridNumber = value;
-                }
+            }
         }
 
         /// <summary>
@@ -178,6 +179,7 @@ namespace BattleShipGrid
             }
             else
             {
+                Point tempPoint;
                 switch (EtatGrille)
                 {
                     case GridState.BateauxPlacer:
@@ -186,29 +188,44 @@ namespace BattleShipGrid
                         //EtatGrille = GridState.PlacementPorteAvions;
                         break;
                     case GridState.PlacementPorteAvions:
-                        PositionBateau.PPorteAvion = GetGridCoordOfMouse().ToPoint();
-                        PositionBateau.OPorteAvion = OCurrentShip;
-                        EtatGrille = GridState.PlacementCroiseur;
+                        if (CheckBoatLocation(tempPoint = GetGridCoordOfMouse().ToPoint()))
+                        {
+                            PositionBateau.PPorteAvion = tempPoint;
+                            PositionBateau.OPorteAvion = OCurrentShip;
+                            EtatGrille = GridState.PlacementCroiseur;
+                        }
                         break;
                     case GridState.PlacementCroiseur:
-                        PositionBateau.PCroiseur = GetGridCoordOfMouse().ToPoint();
-                        PositionBateau.OCroiseur = OCurrentShip;
-                        EtatGrille = GridState.PlacementContreTorpilleur;
+                        if (CheckBoatLocation(tempPoint = GetGridCoordOfMouse().ToPoint()))
+                        {
+                            PositionBateau.PCroiseur = tempPoint;
+                            PositionBateau.OCroiseur = OCurrentShip;
+                            EtatGrille = GridState.PlacementContreTorpilleur;
+                        }
                         break;
                     case GridState.PlacementContreTorpilleur:
-                        PositionBateau.PContreTorpilleur = GetGridCoordOfMouse().ToPoint();
-                        PositionBateau.OContreTorpilleur = OCurrentShip;
-                        EtatGrille = GridState.PlacementSousMarin;
+                        if (CheckBoatLocation(tempPoint = GetGridCoordOfMouse().ToPoint()))
+                        {
+                            PositionBateau.PContreTorpilleur = tempPoint;
+                            PositionBateau.OContreTorpilleur = OCurrentShip;
+                            EtatGrille = GridState.PlacementSousMarin;
+                        }
                         break;
                     case GridState.PlacementSousMarin:
-                        PositionBateau.PSousMarin = GetGridCoordOfMouse().ToPoint();
-                        PositionBateau.OSousMarin = OCurrentShip;
-                        EtatGrille = GridState.PlacementTorpilleur;
+                        if (CheckBoatLocation(tempPoint = GetGridCoordOfMouse().ToPoint()))
+                        {
+                            PositionBateau.PSousMarin = tempPoint;
+                            PositionBateau.OSousMarin = OCurrentShip;
+                            EtatGrille = GridState.PlacementTorpilleur;
+                        }
                         break;
                     case GridState.PlacementTorpilleur:
-                        PositionBateau.PTorpilleur = GetGridCoordOfMouse().ToPoint();
-                        PositionBateau.OTorpilleur = OCurrentShip;
-                        EtatGrille = GridState.BateauxPlacer;
+                        if (CheckBoatLocation(tempPoint = GetGridCoordOfMouse().ToPoint()))
+                        {
+                            PositionBateau.PTorpilleur = tempPoint;
+                            PositionBateau.OTorpilleur = OCurrentShip;
+                            EtatGrille = GridState.BateauxPlacer;
+                        }
                         break;
                     default:
                         break;
@@ -219,22 +236,171 @@ namespace BattleShipGrid
                 FPoint coords = GetGridCoordOfMouse();
                 //DrawSelection(coords);
             }
-            
+
 
             //MessageBox.Show(PGridColor.ToString() + coords.X.ToString() + " " + coords.Y.ToString());
         }
 
+        private bool CheckBoatLocation(Point location)
+        {
+            bool Result = true;
+            switch (EtatGrille)
+            {
+                case GridState.PlacementTorpilleur:
+                    //check torpilleur
+                    if (OCurrentShip == PosShips.Orientation.Horizontale)
+                    {
+                        if (location.X + SizeTorpilleur - 1 < 10)
+                            for (int i = 0; Result && i < SizeTorpilleur; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X + i, location.Y), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions) ||
+                                    containsHit(new Point(location.X + i, location.Y), PositionBateau.PCroiseur, PositionBateau.OCroiseur, (int)SizeCroiseur) ||
+                                    containsHit(new Point(location.X + i, location.Y), PositionBateau.PContreTorpilleur, PositionBateau.OContreTorpilleur, (int)SizeContreTorpilleur) ||
+                                    containsHit(new Point(location.X + i, location.Y), PositionBateau.PSousMarin, PositionBateau.OSousMarin, (int)SizeSousMarin));
+                            }
+                        else
+                            Result = false;
+                    }
+                    else
+                    {
+                        if (location.Y + SizeTorpilleur - 1 < 10)
+                            for (int i = 0; Result && i < SizeTorpilleur; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X, location.Y + i), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions) ||
+                                    containsHit(new Point(location.X, location.Y + i), PositionBateau.PCroiseur, PositionBateau.OCroiseur, (int)SizeCroiseur) ||
+                                    containsHit(new Point(location.X, location.Y + i), PositionBateau.PContreTorpilleur, PositionBateau.OContreTorpilleur, (int)SizeContreTorpilleur) ||
+                                    containsHit(new Point(location.X, location.Y + i), PositionBateau.PSousMarin, PositionBateau.OSousMarin, (int)SizeSousMarin));
+                            }
+                        else
+                            Result = false;
+                    }
+
+                    break;
+                case GridState.PlacementSousMarin:
+                    //check sousmarin
+                    if (OCurrentShip == PosShips.Orientation.Horizontale)
+                    {
+                        if (location.X + SizeSousMarin - 1 < 10)
+                            for (int i = 0; Result && i < SizeSousMarin; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X + i, location.Y), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions) ||
+                                    containsHit(new Point(location.X + i, location.Y), PositionBateau.PCroiseur, PositionBateau.OCroiseur, (int)SizeCroiseur) ||
+                                    containsHit(new Point(location.X + i, location.Y), PositionBateau.PContreTorpilleur, PositionBateau.OContreTorpilleur, (int)SizeContreTorpilleur));
+                            }
+                        else
+                            Result = false;
+                    }
+                    else
+                    {
+                        if (location.Y + SizeSousMarin - 1 < 10)
+                            for (int i = 0; Result && i < SizeSousMarin; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X, location.Y + i), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions) ||
+                                    containsHit(new Point(location.X, location.Y + i), PositionBateau.PCroiseur, PositionBateau.OCroiseur, (int)SizeCroiseur) ||
+                                    containsHit(new Point(location.X, location.Y + i), PositionBateau.PContreTorpilleur, PositionBateau.OContreTorpilleur, (int)SizeContreTorpilleur));
+                            }
+                        else
+                            Result = false;
+                    }
+
+                    break;
+                case GridState.PlacementContreTorpilleur:
+                    if (OCurrentShip == PosShips.Orientation.Horizontale)
+                    {
+                        if (location.X + SizeContreTorpilleur - 1 < 10)
+                            for (int i = 0; Result && i < SizeContreTorpilleur; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X + i, location.Y), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions) ||
+                                    containsHit(new Point(location.X + i, location.Y), PositionBateau.PCroiseur, PositionBateau.OCroiseur, (int)SizeCroiseur));
+                            }
+                        else
+                            Result = false;
+                    }
+                    else
+                    {
+                        if (location.Y + SizeContreTorpilleur - 1 < 10)
+                            for (int i = 0; Result && i < SizeContreTorpilleur; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X, location.Y + i), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions) ||
+                                    containsHit(new Point(location.X, location.Y + i), PositionBateau.PCroiseur, PositionBateau.OCroiseur, (int)SizeCroiseur));
+                            }
+                        else
+                            Result = false;
+                    }
+                    break;
+                case GridState.PlacementCroiseur:
+                    if (OCurrentShip == PosShips.Orientation.Horizontale)
+                    {
+                        if (location.X + SizeCroiseur - 1 < 10)
+                            for (int i = 0; Result && i < SizeCroiseur; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X + i, location.Y), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions));
+                            }
+                        else
+                            Result = false;
+                    }
+                    else
+                    {
+                        if (location.Y + SizeCroiseur - 1 < 10)
+                            for (int i = 0; Result && i < SizeCroiseur; i++)
+                            {
+                                Result = !(containsHit(new Point(location.X, location.Y + i), PositionBateau.PPorteAvion, PositionBateau.OPorteAvion, (int)SizePorteAvions));
+                            }
+                        else
+                            Result = false;
+                    }
+                    break;
+                case GridState.PlacementPorteAvions:
+                    if (OCurrentShip == PosShips.Orientation.Horizontale)
+                    {
+                        if (location.X + SizePorteAvions - 1 < 10)
+                            Result = true;
+                        else
+                            Result = false;
+                    }
+                    else
+                    {
+                        if (location.Y + SizePorteAvions - 1 < 10)
+                            Result = true;
+                        else
+                            Result = false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return Result;
+        }
+
+        private bool containsHit(Point Hit, Point location, PosShips.Orientation orient, int longueur)
+        {
+            if (orient == PosShips.Orientation.Horizontale)
+            {
+                if (Hit.X >= location.X && Hit.X <= location.X + longueur - 1 && Hit.Y == location.Y)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                if (Hit.Y >= location.Y && Hit.Y <= location.Y + longueur - 1 && Hit.X == location.X)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
         public void DebutPlacerBateaux()
         {
-            if(EtatGrille==GridState.None)
-            EtatGrille = GridState.PlacementPorteAvions;
+            if (EtatGrille == GridState.None)
+                EtatGrille = GridState.PlacementPorteAvions;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            if(EtatGrille != GridState.BateauxPlacer && EtatGrille != GridState.None )
-            Refresh();
+            if (EtatGrille != GridState.BateauxPlacer && EtatGrille != GridState.None)
+                Refresh();
         }
 
         /// <summary>
@@ -243,7 +409,7 @@ namespace BattleShipGrid
         /// <returns>Coordonnées de la grille</returns>
         private FPoint GetGridCoordOfMouse()
         {
-            
+
             FPoint mouse = new FPoint(this.PointToClient(Cursor.Position));
             mouse.X = (float)Math.Floor(mouse.X / GridRectWidth);
             mouse.Y = (float)Math.Floor(mouse.Y / GridRectHeight);
@@ -254,7 +420,7 @@ namespace BattleShipGrid
                 mouse.Y = GridNumber - 1;
             //MessageBox.Show(mouse.X + " " + mouse.Y);
             return mouse;
-            
+
         }
 
         /// <summary>
@@ -270,7 +436,7 @@ namespace BattleShipGrid
             FPoint coords = GetGridCoordOfMouse();
             DrawShips();
 
-           // DrawRect(Color.Aquamarine, Color.Chocolate, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
+            // DrawRect(Color.Aquamarine, Color.Chocolate, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
         }
 
         #region Draw
@@ -328,7 +494,7 @@ namespace BattleShipGrid
 
         private void DrawSingleShip(Image img, GridState ImgState)
         {
-            
+
             if (EtatGrille == ImgState) // si dans le même état que l'image dessine un preview
             {
                 FPoint pos = GetGridCoordOfMouse();
@@ -356,7 +522,7 @@ namespace BattleShipGrid
                         default:
                             break;
                     }
-                    
+
                 }
                 else
                 {
@@ -452,18 +618,18 @@ namespace BattleShipGrid
                         break;
                 }
             }
-                //DrawImage(Torpilleur, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
+            //DrawImage(Torpilleur, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
 
-            
+
         }
 
         private void DrawImage(Image img, float x, float y, float width, float height)
         {
             Graphics graph = this.CreateGraphics();
             //BufferedGraphicsContext graph = BufferedGraphicsManager.Current;
-            graph.DrawImage(img,x,y,width,height);
+            graph.DrawImage(img, x, y, width, height);
             //MessageBox.Show(x.)
-            
+
         }
         /// <summary>
         /// Dessine le rectangle sous la coordonné
@@ -471,13 +637,13 @@ namespace BattleShipGrid
         /// <param name="coords"></param>
         private void DrawSelection(FPoint coords)
         {
-            if(coords.X<9 && coords.Y<9)
+            if (coords.X < 9 && coords.Y < 9)
                 DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
             else if (coords.X >= 9 && coords.Y >= 9)
-                DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight,Width - coords.X * GridRectWidth, Height - coords.Y* GridRectHeight);
-            else if(coords.X>=9)
+                DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, Width - coords.X * GridRectWidth, Height - coords.Y * GridRectHeight);
+            else if (coords.X >= 9)
                 DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, Width - coords.X * GridRectWidth, GridRectHeight);
-            else if(coords.Y>=9)
+            else if (coords.Y >= 9)
                 DrawRect(BorderOfSelection, InteriorOfSelection, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, Height - coords.Y * GridRectHeight);
 
 
