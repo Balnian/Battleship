@@ -19,12 +19,20 @@ namespace BattleshipServer
         public TcpClient Joueur2 { get; private set; }
         Thread jeu;
 
+        /// <summary>
+        /// Crée une instance de jeu avec un joueur
+        /// </summary>
+        /// <param name="client">Joueur</param>
         public GameInstance(TcpClient client)
         {
             Joueur1 = client;
             IsWaitingForPlayer = true;
         }
 
+        /// <summary>
+        /// Ajoute un joueur
+        /// </summary>
+        /// <param name="client">Joueur à ajouter</param>
         public void AjoutJoueur(TcpClient client)
         {
             if (ConnUtility.TestClient(Joueur1))
@@ -42,6 +50,9 @@ namespace BattleshipServer
             }
         }
 
+        /// <summary>
+        /// Arrête l'instance de jeu
+        /// </summary>
         public void StopGameInstance()
         {
             try
@@ -61,7 +72,9 @@ namespace BattleshipServer
             }
         }
 
-
+        /// <summary>
+        /// Débute la partie
+        /// </summary>
         private void StartGame()
         {
             NetworkStream StreamJ1 = Joueur1.GetStream();
@@ -308,11 +321,11 @@ namespace BattleshipServer
         }
 
         /// <summary>
-        /// 
+        /// Retourne l'état du Hit selon la Hitlist et la grille adverse
         /// </summary>
-        /// <param name="Hitlist">sdf</param>
-        /// <param name="GrilleAdverse">un autre</param>
-        /// <returns>banane</returns>
+        /// <param name="Hitlist">Liste de tir sur l'adversaire</param>
+        /// <param name="GrilleAdverse">Grille de position adverse</param>
+        /// <returns>État du tir</returns>
         private Hit.HitState ProcessHit(List<Hit> Hitlist, PosShips GrilleAdverse)
         {
             //Porte Avion
@@ -373,6 +386,14 @@ namespace BattleshipServer
 
         }
 
+        /// <summary>
+        /// si le Hit est sur le bateau passer en parametre
+        /// </summary>
+        /// <param name="Hit">Position du tir</param>
+        /// <param name="location">Position du bateau</param>
+        /// <param name="orient">Orientation du bateau</param>
+        /// <param name="longueur">Longueur du bateau</param>
+        /// <returns>Si le bateau est toucher</returns>
         private bool containsHit(Point Hit, Point location, PosShips.Orientation orient, int longueur)
         {
             if (orient == PosShips.Orientation.Horizontale)
@@ -391,6 +412,14 @@ namespace BattleshipServer
             }
         }
 
+        /// <summary>
+        /// Retourne si le tir à couler le bateau
+        /// </summary>
+        /// <param name="Hit">Position du tir</param>
+        /// <param name="location">Position du bateau</param>
+        /// <param name="orient">Orientation du bateau</param>
+        /// <param name="longueur">longueur du bateau</param>
+        /// <returns>Si le bateau est toucher couler</returns>
         private bool ToucherCouler(Point Hit, Point location, PosShips.Orientation orient, int longueur)
         {
             if (orient == PosShips.Orientation.Horizontale)
@@ -409,6 +438,12 @@ namespace BattleshipServer
             }
         }
 
+        /// <summary>
+        /// Si le joueur à gagner 
+        /// </summary>
+        /// <param name="Hitlist">Liste de tir sur l'ADVERSAIRE</param>
+        /// <param name="GrilleAdverse">Grille de l'adversaire</param>
+        /// <returns>à Gagner</returns>
         private bool aGagner(List<Hit> Hitlist, PosShips GrilleAdverse)
         {
             //Vérifie si chaque bateau à été couler
