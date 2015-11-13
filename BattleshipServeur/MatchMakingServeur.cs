@@ -21,15 +21,17 @@ namespace BattleshipServer
 
         public MatchMakingServeur()
         {
-            
-            Nettoyage = new Thread(cleanInstances);//100ms / Instances
+            //Démarre le garbage collector d'instance de jeu vide
+            Nettoyage = new Thread(cleanInstances);
             Nettoyage.Start();
         }
 
+        /// <summary>
+        /// Attend des connections et jumelle les joueur ensemble 
+        /// </summary>
         public void ListenServeur()
         {
             Stop = false;
-            //TcpListener serverSocket = new TcpListener(8888);
             TcpListener serverSocket = new TcpListener(IPAddress.Any, 8080);
             try
             {
@@ -43,10 +45,7 @@ namespace BattleshipServer
                 Console.WriteLine(e.Message);
             }
 
-
-            //TcpClient clientSocket = default(TcpClient);
-
-
+            //Main Loop de MatchMaking
             LogConsole.LogWithTime("Serveur à démarrer");
             while (!Stop)
             {
@@ -70,6 +69,11 @@ namespace BattleshipServer
 
         }
 
+        /// <summary>
+        /// Vérifie si il y a une instance de jeu qui attend un joueur
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         private bool CheckExistingInstances(TcpClient client)
         {
 
@@ -78,15 +82,6 @@ namespace BattleshipServer
                 GameInstances.Last().AjoutJoueur(client);
                 return false;
             }
-            //foreach (GameInstance game in GameInstances)
-            //{
-            //    if (game.IsWaitingForPlayer)
-            //    {
-            //        game.AjoutJoueur(client);
-            //        return false;
-
-            //    }
-            //}
             
             return true;
         }
@@ -130,27 +125,30 @@ namespace BattleshipServer
             
         }
 
-        public int getInstanceNumber(GameInstance instance)
-        {
-            Lock.WaitOne();
-            int Numb = GameInstances.IndexOf(instance);
-            Lock.ReleaseMutex();
-            return Numb;
-
-        }
-
+        /// <summary>
+        /// Supprime une instance de jeu
+        /// </summary>
+        /// <param name="instance"></param>
         private void deleteInstance(GameInstance instance)
         {
+            Lock.WaitOne();
             instance.StopGameInstance();
             GameInstances.Remove(instance);
+            Lock.ReleaseMutex();
         }
 
+        /// <summary>
+        /// Arrête le garbage collector qui détruit toutes les instances de jeu restante
+        /// </summary>
        public void DropAllGameInstances()
         {
             GarbageCollect = false;
 
         }
 
+        /// <summary>
+        /// Supprime toutes les instances de jeux
+        /// </summary>
         private void deleteRemainingGameInstances()
        {
            Lock.WaitOne();
