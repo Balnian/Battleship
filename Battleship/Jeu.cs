@@ -63,7 +63,7 @@ namespace Battleship
                     }
                     catch (Exception es)
                     {
-                        Console.Beep(800, 700);
+                        //Console.Beep(800, 700);
                         State = GameState.ServerDC;
                         //UpdateAction();
                     }
@@ -209,7 +209,9 @@ namespace Battleship
             {
                 carry = CommUtility.ReadAndDeserialize(serveur.GetStream());
                 AjoutHit((Hit)carry);
+                
                 Lock.WaitOne();
+                Thread.Sleep(300);
                 State = GameState.WaitingTurn;
                 Lock.ReleaseMutex();
                 UpdateAction();

@@ -223,7 +223,7 @@ namespace BattleShipGridAttaque
                 if (!exist)
                 {
                     WaitingForInput = false;
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
                     OnHit(this, new HitArgs(coords));
                 }
                     
