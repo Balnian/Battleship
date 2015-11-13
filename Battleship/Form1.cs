@@ -146,7 +146,7 @@ namespace Battleship
                                                     MessageBoxIcon.Error);
                         break;
                 }
-                //lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
+                LB_Debug.Text = BSG_Enemy.WaitingForInput.ToString();
                 Jeu.Lock.ReleaseMutex();
                 
             }

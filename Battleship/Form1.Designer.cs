@@ -39,8 +39,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.TB_IpAdress = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
             this.BSG_Client = new BattleShipGrid.BattleShipGrid();
+            this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
+            this.LB_Debug = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -131,6 +132,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connexion";
             // 
+            // BSG_Client
+            // 
+            this.BSG_Client.BorderOfSelection = System.Drawing.Color.Transparent;
+            this.BSG_Client.ContreTorpilleur = global::Battleship.Properties.Resources.contretorpilleur;
+            this.BSG_Client.Croiseur = global::Battleship.Properties.Resources.Croiseur;
+            this.BSG_Client.GridColor = System.Drawing.Color.Black;
+            this.BSG_Client.GridNumber = ((uint)(10u));
+            this.BSG_Client.InteriorOfSelection = System.Drawing.Color.Red;
+            this.BSG_Client.Location = new System.Drawing.Point(12, 39);
+            this.BSG_Client.Name = "BSG_Client";
+            this.BSG_Client.PorteAvions = global::Battleship.Properties.Resources.PorteAvions;
+            this.BSG_Client.Size = new System.Drawing.Size(300, 300);
+            this.BSG_Client.SousMarin = global::Battleship.Properties.Resources.SousMarin;
+            this.BSG_Client.TabIndex = 5;
+            this.BSG_Client.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
+            // 
             // BSG_Enemy
             // 
             this.BSG_Enemy.BorderOfSelection = System.Drawing.Color.Transparent;
@@ -150,27 +167,21 @@
             this.BSG_Enemy.WaitingForInput = false;
             this.BSG_Enemy.OnHit += new BattleShipGridAttaque.BattleShipGridAttaque.HitHandler(this.battleShipGridAttaque1_OnHit);
             // 
-            // BSG_Client
+            // LB_Debug
             // 
-            this.BSG_Client.BorderOfSelection = System.Drawing.Color.Transparent;
-            this.BSG_Client.ContreTorpilleur = global::Battleship.Properties.Resources.contretorpilleur;
-            this.BSG_Client.Croiseur = global::Battleship.Properties.Resources.Croiseur;
-            this.BSG_Client.GridColor = System.Drawing.Color.Black;
-            this.BSG_Client.GridNumber = ((uint)(10u));
-            this.BSG_Client.InteriorOfSelection = System.Drawing.Color.Red;
-            this.BSG_Client.Location = new System.Drawing.Point(12, 39);
-            this.BSG_Client.Name = "BSG_Client";
-            this.BSG_Client.PorteAvions = global::Battleship.Properties.Resources.PorteAvions;
-            this.BSG_Client.Size = new System.Drawing.Size(300, 300);
-            this.BSG_Client.SousMarin = global::Battleship.Properties.Resources.SousMarin;
-            this.BSG_Client.TabIndex = 5;
-            this.BSG_Client.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
+            this.LB_Debug.AutoSize = true;
+            this.LB_Debug.Location = new System.Drawing.Point(259, 380);
+            this.LB_Debug.Name = "LB_Debug";
+            this.LB_Debug.Size = new System.Drawing.Size(12, 13);
+            this.LB_Debug.TabIndex = 14;
+            this.LB_Debug.Text = "x";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(661, 448);
+            this.Controls.Add(this.LB_Debug);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.BSG_Enemy);
             this.Controls.Add(this.pictureBox1);
@@ -205,6 +216,7 @@
         private BattleShipGridAttaque.BattleShipGridAttaque BSG_Enemy;
         private System.Windows.Forms.TextBox TB_IpAdress;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label LB_Debug;
 
     }
 }
