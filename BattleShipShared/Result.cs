@@ -11,17 +11,29 @@ namespace BattleShipShared
         [Serializable]
         public class Result
         {
+            /// <summary>
+            /// États du Result
+            /// </summary>
             public enum ResultState
             {
                 Victory,
                 Lose
             }
 
+            /// <summary>
+            /// État
+            /// </summary>
             public ResultState Etat { get; set; }
 
+            /// <summary>
+            /// Grille Ennemie
+            /// </summary>
             public PosShips EnemyShips { get; set; }
 
-            public Hit Touche { get; set; }//yo mama so fat she got two watches, one for each time zone she's in.
+            /// <summary>
+            /// Coordonnées du dernier tir de la partie
+            /// </summary>
+            public Hit Touche { get; set; }
         }
     }
 }
