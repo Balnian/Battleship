@@ -14,6 +14,9 @@ namespace Battleship
 {
     class Jeu
     {
+        /// <summary>
+        /// Enum des états de Jeu(GameState)
+        /// </summary>
         public enum GameState
         {
             WaitingStartGame,
@@ -38,6 +41,12 @@ namespace Battleship
         private func AddHitSelf;
         //private volatile bool gameStarted = false;
 
+        /// <summary>
+        /// Constructeur du jeu
+        /// applique l'adresse IP et change l'état du jeu a WaitingStart
+        /// </summary>
+        /// <param name="Ip">Adresse IP</param>
+        /// <param name="HandleClient"></param>
         public Jeu(String Ip,func HandleClient)
         {
             ipAdress = Ip;
@@ -49,13 +58,16 @@ namespace Battleship
 
         }
 
+        /// <summary>
+        /// effectue des actions selon l'état du Jeu
+        /// </summary>
         private void UpdateAction()
         {
             Lock.WaitOne();
             switch (State)
             {
                 case GameState.WaitingStartGame:
-                    try
+                    try //Tentative de connection a l'addresse fourni
                     {
                         serveur = new TcpClient(ipAdress, 8080);
                         attente = new Thread(AttendreDebutPartie);
@@ -63,9 +75,7 @@ namespace Battleship
                     }
                     catch (Exception es)
                     {
-                        //Console.Beep(800, 700);
                         State = GameState.ServerDC;
-                        //UpdateAction();
                     }
                     
                     break;
@@ -73,7 +83,7 @@ namespace Battleship
                     //L'utilisateur place ses bateau dans l'interface
                     break;
                 case GameState.WaitingTurn:
-                    waitingTurn = new Thread(WaitingTurn);
+                    waitingTurn = new Thread(WaitingTurn);//Part un Thread d'écoute pour attendre son tour
                     waitingTurn.Start();
                     break;
                 case GameState.PlayingTurn:
@@ -90,6 +100,10 @@ namespace Battleship
             }
             Lock.ReleaseMutex();
         }
+
+        /// <summary>
+        /// Attendre le réponse du serveur pour continuer
+        /// </summary>
         public void AttendreDebutPartie()
         {
             try
@@ -115,21 +129,12 @@ namespace Battleship
             }
         }
 
+        /// <summary>
+        /// Envoie La grille de bateaux au servers
+        /// </summary>
+        /// <param name="grilleBeto"></param>
         public void EnvoiBateau(PosShips grilleBeto)
         {
-            //CommUtility.SerializeAndSend(serveur.GetStream(), new PosShips
-            //{
-            //    PPorteAvion = new Point(0, 0),
-            //    OPorteAvion = PosShips.Orientation.Horizontale,
-            //    PCroiseur = new Point(0, 1),
-            //    OCroiseur = PosShips.Orientation.Horizontale,
-            //    PContreTorpilleur = new Point(0, 2),
-            //    OContreTorpilleur = PosShips.Orientation.Horizontale,
-            //    PSousMarin = new Point(0, 3),
-            //    OSousMarin = PosShips.Orientation.Horizontale,
-            //    PTorpilleur = new Point(0, 4),
-            //    OTorpilleur = PosShips.Orientation.Horizontale
-            //});
             CommUtility.SerializeAndSend(serveur.GetStream(), grilleBeto);
             Lock.WaitOne();
             State = Jeu.GameState.WaitingTurn;
@@ -138,10 +143,13 @@ namespace Battleship
 
         }
 
+        /// <summary>
+        /// Attend son tour en Thread pour continuer a jouer
+        /// </summary>
         public void WaitingTurn()
         {
             object data = null;
-            try
+            try //Essai de convertir l'objet recu en Hit
             {
                 serveur.ReceiveTimeout = 90000;
                 data = CommUtility.ReadAndDeserialize(serveur.GetStream());
@@ -156,10 +164,10 @@ namespace Battleship
             }
             catch (Exception ex)
             {
-                try
+                try //Si pas convertable en Hit, essai de convertir en result
                 {
                     Result result = (Result)data;
-                    if (result.Etat == Result.ResultState.Lose)
+                    if (result.Etat == Result.ResultState.Lose)//si le résultat est "Lose"
                     {
                         if (result.Touche != null && result.Touche.Etat!=Hit.HitState.NoAction)
                             AddHitSelf(result.Touche);
@@ -169,7 +177,7 @@ namespace Battleship
                         Lock.ReleaseMutex();
                         
                     }
-                    else
+                    else//si le résultat est "WIN"
                     {
                         if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
                             AddHitSelf(result.Touche);
@@ -180,7 +188,7 @@ namespace Battleship
                     }
                     UpdateAction();
                 }
-                catch (Exception es)
+                catch (Exception es)//Si non convertable, on lance une érreur
                 {
                     Lock.WaitOne();
                     State = GameState.ServerDC;
@@ -190,7 +198,12 @@ namespace Battleship
             }
         }
 
-        
+        /// <summary>
+        /// Jouer son tour
+        /// Envoie d'un Hit au serveur
+        /// </summary>
+        /// <param name="point">point touché</param>
+        /// <param name="AjoutHit"></param>
         public void PlayingTurn(Point point, func AjoutHit)
         {
             try
@@ -212,7 +225,11 @@ namespace Battleship
         }
 
 
-
+        /// <summary>
+        /// Attente de la comfirmation du serveur pour savoir si le Hit
+        /// est un Flop ou un Touché
+        /// </summary>
+        /// <param name="AjoutHit"></param>
         private void waitHitConfirm(func AjoutHit)
         {
             object carry = null;
@@ -235,7 +252,7 @@ namespace Battleship
                     if (carry != null)
                     {
                         Result result = (Result)carry;
-                        if(result.Etat == Result.ResultState.Victory)
+                        if(result.Etat == Result.ResultState.Victory)//Si la réponse est Victoire
                         {
                             if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
                                 AjoutHit(result.Touche);
@@ -246,7 +263,7 @@ namespace Battleship
                             UpdateAction();
 
                         }
-                        else
+                        else//Si la réponse est Perdage
                         {
                             if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
                                 AjoutHit(result.Touche);
@@ -272,6 +289,9 @@ namespace Battleship
             
         }
 
+        /// <summary>
+        /// Fermeture de tout activité avant la fermeture complete du Form
+        /// </summary>
         public void Close()
         {
             if (attente != null && attente.IsAlive)
