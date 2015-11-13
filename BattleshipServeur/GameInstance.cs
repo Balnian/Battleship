@@ -134,6 +134,7 @@ namespace BattleshipServer
 
                     try
                     {
+                        Thread.Sleep(100);
                         //Attend le Hit selon le joueur qui joue en se moment
                         ((!J1Joue) ? HitJoueur1 : HitJoueur2).Add((Hit)CommUtility.ReadAndDeserialize((J1Joue ? StreamJ1 : StreamJ2)));
 
