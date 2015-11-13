@@ -193,9 +193,20 @@ namespace Battleship
         
         public void PlayingTurn(Point point, func AjoutHit)
         {
-            CommUtility.SerializeAndSend(serveur.GetStream(), new Hit { Etat = Hit.HitState.NoAction, Location = point });
+            try
+            {
+                CommUtility.SerializeAndSend(serveur.GetStream(), new Hit { Etat = Hit.HitState.NoAction, Location = point });
 
-            (new Thread(() => waitHitConfirm(AjoutHit))).Start();
+                (new Thread(() => waitHitConfirm(AjoutHit))).Start();
+            }
+            catch (Exception)
+            {
+
+                Lock.WaitOne();
+                State = GameState.ServerDC;
+                Lock.ReleaseMutex();
+            }
+            
 
 
         }
@@ -227,7 +238,7 @@ namespace Battleship
                         if(result.Etat == Result.ResultState.Victory)
                         {
                             if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
-                                AddHitSelf(result.Touche);
+                                AjoutHit(result.Touche);
                             Lock.WaitOne();
                             State = GameState.Victory;
                             EnemyShips = result.EnemyShips;
@@ -238,7 +249,7 @@ namespace Battleship
                         else
                         {
                             if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
-                                AddHitSelf(result.Touche);
+                                AjoutHit(result.Touche);
                             Lock.WaitOne();
                             State = GameState.Lose;
                             EnemyShips = result.EnemyShips;
