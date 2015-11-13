@@ -149,6 +149,7 @@ namespace BattleShipGrid
         #endregion
 
         private Mutex Lock = new Mutex();
+        
         public BattleShipGrid()
         {
             InitializeComponent();
@@ -245,6 +246,8 @@ namespace BattleShipGrid
 
             //MessageBox.Show(PGridColor.ToString() + coords.X.ToString() + " " + coords.Y.ToString());
         }
+
+        
 
         private bool CheckBoatLocation(Point location)
         {

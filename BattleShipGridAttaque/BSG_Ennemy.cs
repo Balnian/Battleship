@@ -200,6 +200,7 @@ namespace BattleShipGridAttaque
         /// <param name="e"></param>
         protected override void OnClick(EventArgs e)
         {
+            LockWaitinginput.WaitOne();
             if (WaitingForInput)
             {
                 Point coords = GetGridCoordOfMouse().ToPoint();
@@ -221,13 +222,14 @@ namespace BattleShipGridAttaque
 
                 if (!exist)
                 {
-                    LockWaitinginput.WaitOne();
+                    
                     WaitingForInput = false;
-                    LockWaitinginput.ReleaseMutex();
+                    
                     OnHit(this, new HitArgs(coords));
                 }
                     
             }
+            LockWaitinginput.ReleaseMutex();
         }
 
         public void WaitForinput()
