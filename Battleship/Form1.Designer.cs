@@ -37,11 +37,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lb_takeInputs = new System.Windows.Forms.Label();
-            this.BSG_Client = new BattleShipGrid.BattleShipGrid();
-            this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
             this.TB_IpAdress = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
+            this.BSG_Client = new BattleShipGrid.BattleShipGrid();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -114,30 +113,23 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
-            // lb_takeInputs
+            // TB_IpAdress
             // 
-            this.lb_takeInputs.AutoSize = true;
-            this.lb_takeInputs.Location = new System.Drawing.Point(249, 409);
-            this.lb_takeInputs.Name = "lb_takeInputs";
-            this.lb_takeInputs.Size = new System.Drawing.Size(26, 13);
-            this.lb_takeInputs.TabIndex = 11;
-            this.lb_takeInputs.Text = "État";
+            this.TB_IpAdress.Location = new System.Drawing.Point(6, 48);
+            this.TB_IpAdress.Name = "TB_IpAdress";
+            this.TB_IpAdress.Size = new System.Drawing.Size(100, 20);
+            this.TB_IpAdress.TabIndex = 12;
             // 
-            // BSG_Client
+            // groupBox1
             // 
-            this.BSG_Client.BorderOfSelection = System.Drawing.Color.Transparent;
-            this.BSG_Client.ContreTorpilleur = global::Battleship.Properties.Resources.contretorpilleur;
-            this.BSG_Client.Croiseur = global::Battleship.Properties.Resources.Croiseur;
-            this.BSG_Client.GridColor = System.Drawing.Color.Black;
-            this.BSG_Client.GridNumber = ((uint)(10u));
-            this.BSG_Client.InteriorOfSelection = System.Drawing.Color.Red;
-            this.BSG_Client.Location = new System.Drawing.Point(12, 39);
-            this.BSG_Client.Name = "BSG_Client";
-            this.BSG_Client.PorteAvions = global::Battleship.Properties.Resources.PorteAvions;
-            this.BSG_Client.Size = new System.Drawing.Size(300, 300);
-            this.BSG_Client.SousMarin = global::Battleship.Properties.Resources.SousMarin;
-            this.BSG_Client.TabIndex = 5;
-            this.BSG_Client.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
+            this.groupBox1.Controls.Add(this.BTN_Connection);
+            this.groupBox1.Controls.Add(this.TB_IpAdress);
+            this.groupBox1.Location = new System.Drawing.Point(12, 345);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(112, 77);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Connexion";
             // 
             // BSG_Enemy
             // 
@@ -158,23 +150,21 @@
             this.BSG_Enemy.WaitingForInput = false;
             this.BSG_Enemy.OnHit += new BattleShipGridAttaque.BattleShipGridAttaque.HitHandler(this.battleShipGridAttaque1_OnHit);
             // 
-            // TB_IpAdress
+            // BSG_Client
             // 
-            this.TB_IpAdress.Location = new System.Drawing.Point(6, 48);
-            this.TB_IpAdress.Name = "TB_IpAdress";
-            this.TB_IpAdress.Size = new System.Drawing.Size(100, 20);
-            this.TB_IpAdress.TabIndex = 12;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.BTN_Connection);
-            this.groupBox1.Controls.Add(this.TB_IpAdress);
-            this.groupBox1.Location = new System.Drawing.Point(12, 345);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(112, 77);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Connexion";
+            this.BSG_Client.BorderOfSelection = System.Drawing.Color.Transparent;
+            this.BSG_Client.ContreTorpilleur = global::Battleship.Properties.Resources.contretorpilleur;
+            this.BSG_Client.Croiseur = global::Battleship.Properties.Resources.Croiseur;
+            this.BSG_Client.GridColor = System.Drawing.Color.Black;
+            this.BSG_Client.GridNumber = ((uint)(10u));
+            this.BSG_Client.InteriorOfSelection = System.Drawing.Color.Red;
+            this.BSG_Client.Location = new System.Drawing.Point(12, 39);
+            this.BSG_Client.Name = "BSG_Client";
+            this.BSG_Client.PorteAvions = global::Battleship.Properties.Resources.PorteAvions;
+            this.BSG_Client.Size = new System.Drawing.Size(300, 300);
+            this.BSG_Client.SousMarin = global::Battleship.Properties.Resources.SousMarin;
+            this.BSG_Client.TabIndex = 5;
+            this.BSG_Client.Torpilleur = global::Battleship.Properties.Resources.torpilleur;
             // 
             // Form1
             // 
@@ -182,7 +172,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(661, 448);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.lb_takeInputs);
             this.Controls.Add(this.BSG_Enemy);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
@@ -214,7 +203,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private BattleShipGridAttaque.BattleShipGridAttaque BSG_Enemy;
-        private System.Windows.Forms.Label lb_takeInputs;
         private System.Windows.Forms.TextBox TB_IpAdress;
         private System.Windows.Forms.GroupBox groupBox1;
 

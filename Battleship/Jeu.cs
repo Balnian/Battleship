@@ -33,15 +33,19 @@ namespace Battleship
         private List<Hit> listHit = new List<Hit>();
         public PosShips EnemyShips = null;
         private String ipAdress;
+        public delegate void func(Hit leH);
+
+        private func AddHitSelf;
         //private volatile bool gameStarted = false;
 
-        public Jeu(String Ip)
+        public Jeu(String Ip,func HandleClient)
         {
             ipAdress = Ip;
             Lock.WaitOne();
             State = GameState.WaitingStartGame;
             Lock.ReleaseMutex();
             UpdateAction();
+            AddHitSelf = HandleClient;
 
         }
 
@@ -143,7 +147,7 @@ namespace Battleship
                 data = CommUtility.ReadAndDeserialize(serveur.GetStream());
                 Hit hit = (Hit)data;
                 if (hit.Etat != Hit.HitState.NoAction)
-                    listHit.Add(hit);
+                    AddHitSelf(hit);
 
                 Lock.WaitOne();
                 State = GameState.PlayingTurn;
@@ -157,6 +161,8 @@ namespace Battleship
                     Result result = (Result)data;
                     if (result.Etat == Result.ResultState.Lose)
                     {
+                        if (result.Touche != null && result.Touche.Etat!=Hit.HitState.NoAction)
+                            AddHitSelf(result.Touche);
                         Lock.WaitOne();
                         State = GameState.Lose;
                         EnemyShips = result.EnemyShips;
@@ -165,6 +171,8 @@ namespace Battleship
                     }
                     else
                     {
+                        if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
+                            AddHitSelf(result.Touche);
                         Lock.WaitOne();
                         State = GameState.Victory;
                         EnemyShips = result.EnemyShips;
@@ -182,7 +190,7 @@ namespace Battleship
             }
         }
 
-        public delegate void func(Hit leH);
+        
         public void PlayingTurn(Point point, func AjoutHit)
         {
             CommUtility.SerializeAndSend(serveur.GetStream(), new Hit { Etat = Hit.HitState.NoAction, Location = point });
@@ -216,6 +224,8 @@ namespace Battleship
                         Result result = (Result)carry;
                         if(result.Etat == Result.ResultState.Victory)
                         {
+                            if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
+                                AddHitSelf(result.Touche);
                             Lock.WaitOne();
                             State = GameState.Victory;
                             EnemyShips = result.EnemyShips;
@@ -225,6 +235,8 @@ namespace Battleship
                         }
                         else
                         {
+                            if (result.Touche != null && result.Touche.Etat != Hit.HitState.NoAction)
+                                AddHitSelf(result.Touche);
                             Lock.WaitOne();
                             State = GameState.Lose;
                             EnemyShips = result.EnemyShips;

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BattleShipShared.Packet;
+using System.Threading;
 
 namespace BattleShipGrid
 {
@@ -142,8 +143,12 @@ namespace BattleShipGrid
 
         public GridState EtatGrille { get; private set; }
 
+        private List<Hit> hitList = new List<Hit>();
+
 
         #endregion
+
+        private Mutex Lock = new Mutex();
         public BattleShipGrid()
         {
             InitializeComponent();
@@ -390,6 +395,15 @@ namespace BattleShipGrid
             }
         }
 
+        public void AddHit(Hit leH)
+        {
+            Lock.WaitOne();
+            hitList.Add(leH);
+            Lock.ReleaseMutex();
+            Refresh();
+
+        }
+
         public void DebutPlacerBateaux()
         {
             if (EtatGrille == GridState.None)
@@ -433,13 +447,24 @@ namespace BattleShipGrid
             base.OnPaint(pe);
             //Dessine la Grille
             DrawGrid();
-            FPoint coords = GetGridCoordOfMouse();
+            DrawShots();
             DrawShips();
 
             // DrawRect(Color.Aquamarine, Color.Chocolate, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
         }
 
         #region Draw
+
+        private void DrawShots()
+        {
+            Lock.WaitOne();
+            if (hitList != null)
+                foreach (Hit item in hitList)
+                {
+                    DrawHit(item.Location, ((item.Etat != Hit.HitState.Flop) ? Color.Red : Color.Blue));
+                }
+            Lock.ReleaseMutex();
+        }
 
         private void DrawShips()
         {
@@ -629,6 +654,19 @@ namespace BattleShipGrid
             //BufferedGraphicsContext graph = BufferedGraphicsManager.Current;
             graph.DrawImage(img, x, y, width, height);
             //MessageBox.Show(x.)
+
+        }
+
+        private void DrawHit(Point coords, Color couleur)
+        {
+            if (coords.X < 9 && coords.Y < 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, GridRectHeight);
+            else if (coords.X >= 9 && coords.Y >= 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, Width - coords.X * GridRectWidth, Height - coords.Y * GridRectHeight);
+            else if (coords.X >= 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, Width - coords.X * GridRectWidth, GridRectHeight);
+            else if (coords.Y >= 9)
+                DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, Height - coords.Y * GridRectHeight);
 
         }
         /// <summary>

@@ -161,7 +161,7 @@ namespace BattleShipGridAttaque
 
         //private List<Hit> phitList = new List<Hit>();
         
-        public List<Hit> hitList = new List<Hit>();
+        private List<Hit> hitList = new List<Hit>();
         //{ 
         //    get { 
         //        return phitList; 

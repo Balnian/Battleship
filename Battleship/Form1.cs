@@ -96,9 +96,9 @@ namespace Battleship
                                 jeu.Close();
                                 Jeu.Lock.ReleaseMutex();
                                 if (TB_IpAdress.Text == "")
-                                    jeu = new Jeu("LocalHost");
+                                    jeu = new Jeu("LocalHost",BSG_Client.AddHit);
                                 else
-                                    jeu = new Jeu(TB_IpAdress.Text);
+                                    jeu = new Jeu(TB_IpAdress.Text, BSG_Client.AddHit);
                                 Jeu.Lock.WaitOne();
                             }
                             else
@@ -145,7 +145,7 @@ namespace Battleship
                                                     MessageBoxIcon.Error);
                         break;
                 }
-                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
+                //lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
                 Jeu.Lock.ReleaseMutex();
                 
             }
@@ -166,9 +166,9 @@ namespace Battleship
             try
             {
                 if (TB_IpAdress.Text == "")
-                    jeu = new Jeu("LocalHost");
+                    jeu = new Jeu("LocalHost", BSG_Client.AddHit);
                 else
-                    jeu = new Jeu(TB_IpAdress.Text);
+                    jeu = new Jeu(TB_IpAdress.Text, BSG_Client.AddHit);
                 BTN_Connection.Enabled = false;
                 TB_IpAdress.Enabled = false;
                 BTN_EnvoyerBateaux.Enabled = true;                
