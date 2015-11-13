@@ -110,7 +110,7 @@ namespace Battleship
                         //lastStat = jeu.State;
                         break;
                     case Jeu.GameState.Victory:
-                        LB_State.Text = "Victory";
+                        LB_State.Text = "Victoire";
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
@@ -124,7 +124,7 @@ namespace Battleship
                         //lastStat = jeu.State;
                         break;
                     case Jeu.GameState.Lose:
-                        LB_State.Text = "Lose";
+                        LB_State.Text = "Perdu";
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
