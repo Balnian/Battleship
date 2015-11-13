@@ -45,6 +45,7 @@ namespace Battleship
                 thread.Abort();
         }
 
+        int temp = 0;
         private void timer1_Tick(object sender, EventArgs e)
         {
 
@@ -71,9 +72,11 @@ namespace Battleship
                         lastStat = jeu.State;
                         break;
                     case Jeu.GameState.PlayingTurn:
+                        
                         LB_State.Text = "PlayingTurn";
-                        if (jeu.State != lastStat)
+                        if (!BSG_Enemy.WaitingForInput)
                         {
+                            temp++;
                             lastStat = jeu.State;
                             BSG_Enemy.WaitingForInput = true;                         
                         }
@@ -137,7 +140,7 @@ namespace Battleship
                                                     MessageBoxIcon.Error);
                         break;
                 }
-                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
+                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString()+" "+temp.ToString();
                 Jeu.Lock.ReleaseMutex();
                 
             }
@@ -149,6 +152,7 @@ namespace Battleship
             if (BSG_Client.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
             {
                 jeu.EnvoiBateau(BSG_Client.PositionBateau);
+                button1.Enabled = false;
             }
         }
 
@@ -157,6 +161,8 @@ namespace Battleship
             try
             {
                 jeu = new Jeu();
+                BT_Connection.Enabled = false;
+                button1.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -171,7 +177,7 @@ namespace Battleship
         {
             //BSG_Enemy.WaitingForInput = false;
             jeu.PlayingTurn(args.Location,BSG_Enemy.AddHit);
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
         }
     }
 }
