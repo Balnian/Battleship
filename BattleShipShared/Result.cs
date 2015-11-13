@@ -20,6 +20,8 @@ namespace BattleShipShared
             public ResultState Etat { get; set; }
 
             public PosShips EnemyShips { get; set; }
+
+            public Hit Touche { get; set; }//yo mama so fat she got two watches, one for each time zone she's in.
         }
     }
 }
