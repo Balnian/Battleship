@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BattleShipShared.Packet;
+using System.Threading;
 
 namespace BattleShipGridAttaque
 {
@@ -172,6 +173,8 @@ namespace BattleShipGridAttaque
 
         #endregion
 
+        private Mutex Lock = new Mutex();
+
         public delegate void HitHandler(object sender, HitArgs args);
         public event HitHandler OnHit;
 
@@ -200,6 +203,7 @@ namespace BattleShipGridAttaque
             {
                 Point coords = GetGridCoordOfMouse().ToPoint();
                 bool exist = false;
+                Lock.WaitOne();
                 //Check si il y a déja un hit
                 for (int i = 0; hitList!=null && i < hitList.Count;i++ )
                 {
@@ -212,6 +216,7 @@ namespace BattleShipGridAttaque
                         }
 
                 }
+                Lock.ReleaseMutex();
 
                 if (!exist)
                 {
@@ -234,8 +239,10 @@ namespace BattleShipGridAttaque
 
         public void AddHit(Hit leH)
         {
+            Lock.WaitOne();
             hitList.Add(leH);
             Refresh();
+            Lock.ReleaseMutex();
         }
 
         /// <summary>
@@ -280,11 +287,13 @@ namespace BattleShipGridAttaque
 
         private void DrawShots()
         {
+            Lock.WaitOne();
             if(hitList!=null)
             foreach (Hit item in hitList)
 	        {              
 		        DrawHit(item.Location,((item.Etat!=Hit.HitState.Flop)?Color.Red:Color.Blue));
 	        }
+            Lock.ReleaseMutex();
         }
 
         private void DrawShips()

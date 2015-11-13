@@ -59,6 +59,7 @@
             // 
             // button1
             // 
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(110, 354);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 23);
@@ -112,7 +113,7 @@
             // lb_takeInputs
             // 
             this.lb_takeInputs.AutoSize = true;
-            this.lb_takeInputs.Location = new System.Drawing.Point(265, 364);
+            this.lb_takeInputs.Location = new System.Drawing.Point(309, 359);
             this.lb_takeInputs.Name = "lb_takeInputs";
             this.lb_takeInputs.Size = new System.Drawing.Size(26, 13);
             this.lb_takeInputs.TabIndex = 11;
