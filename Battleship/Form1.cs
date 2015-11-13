@@ -45,7 +45,6 @@ namespace Battleship
                 thread.Abort();
         }
 
-        int temp = 0;
         private void timer1_Tick(object sender, EventArgs e)
         {
 
@@ -78,7 +77,6 @@ namespace Battleship
                         LB_State.ForeColor = Color.Green;
                         if (lastStat != jeu.State)
                         {
-                            temp++;
                             lastStat = jeu.State;
                             BSG_Enemy.WaitingForInput = true;                         
                         }
@@ -145,7 +143,7 @@ namespace Battleship
                                                     MessageBoxIcon.Error);
                         break;
                 }
-                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString()+" "+temp.ToString();
+                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
                 Jeu.Lock.ReleaseMutex();
                 
             }

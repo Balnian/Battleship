@@ -53,12 +53,13 @@
             // 
             // LB_State
             // 
-            this.LB_State.AutoSize = true;
-            this.LB_State.Location = new System.Drawing.Point(337, 364);
+            this.LB_State.AutoEllipsis = true;
+            this.LB_State.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LB_State.Location = new System.Drawing.Point(345, 351);
             this.LB_State.Name = "LB_State";
-            this.LB_State.Size = new System.Drawing.Size(26, 13);
+            this.LB_State.Size = new System.Drawing.Size(304, 35);
             this.LB_State.TabIndex = 2;
-            this.LB_State.Text = "État";
+            this.LB_State.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // BTN_EnvoyerBateaux
             // 
@@ -116,7 +117,7 @@
             // lb_takeInputs
             // 
             this.lb_takeInputs.AutoSize = true;
-            this.lb_takeInputs.Location = new System.Drawing.Point(404, 364);
+            this.lb_takeInputs.Location = new System.Drawing.Point(249, 409);
             this.lb_takeInputs.Name = "lb_takeInputs";
             this.lb_takeInputs.Size = new System.Drawing.Size(26, 13);
             this.lb_takeInputs.TabIndex = 11;
