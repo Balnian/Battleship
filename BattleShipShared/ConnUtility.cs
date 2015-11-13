@@ -12,6 +12,11 @@ namespace BattleShipShared
     {
         public class ConnUtility
         {
+            /// <summary>
+            /// Test si un client est encore connecté
+            /// </summary>
+            /// <param name="conn">Connection</param>
+            /// <returns>retourne si le client est encore connecter</returns>
             public static bool TestClient(TcpClient conn)
             {
                 if (conn == null)
@@ -25,6 +30,11 @@ namespace BattleShipShared
 
             }
 
+            /// <summary>
+            /// retourne l'Adresse IP d'un client
+            /// </summary>
+            /// <param name="conn">Connection</param>
+            /// <returns>Adresse IP</returns>
             public static String GetIP(TcpClient conn)
             {
                 return IPAddress.Parse(((IPEndPoint)conn.Client.RemoteEndPoint).Address.ToString()).ToString();
