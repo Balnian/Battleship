@@ -12,6 +12,9 @@ namespace BattleShipShared
         [Serializable]
         public class Hit
         {
+            /// <summary>
+            /// États du Hit
+            /// </summary>
             public enum HitState
             {
                 Hit,
@@ -25,8 +28,14 @@ namespace BattleShipShared
 
             }
 
+            /// <summary>
+            /// État
+            /// </summary>
             public HitState Etat { get; set; }
 
+            /// <summary>
+            /// Position du tir
+            /// </summary>
             public Point Location { get; set; }
         }
     }
