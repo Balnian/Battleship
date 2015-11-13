@@ -32,7 +32,7 @@ namespace Battleship
         private Thread waitingTurn;
         private List<Hit> listHit = new List<Hit>();
         public PosShips EnemyShips = null;
-        private String ipAdress;
+        public String ipAdress;
         public delegate void func(Hit leH);
 
         private func AddHitSelf;

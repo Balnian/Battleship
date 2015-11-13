@@ -251,10 +251,34 @@ namespace BattleShipGridAttaque
         public void AddHit(Hit leH)
         {
             Lock.WaitOne();
-            hitList.Add(leH);
+            hitList.Add(leH);            
             Lock.ReleaseMutex();
             Refresh();
-            
+            showSinkedShip(leH);
+        }
+
+        public void showSinkedShip(Hit hit)
+        {
+            switch (hit.Etat)
+            {
+                case Hit.HitState.CoulerPorteAvion:
+                    MessageBox.Show("Vous avez coulé le Porte-Avion !");
+                    break;
+                case Hit.HitState.CoulerCroiseur:
+                    MessageBox.Show("Vous avez coulé le Croiseur !");
+                    break;
+                case Hit.HitState.CoulerContreTorpilleur:
+                    MessageBox.Show("Vous avez coulé le Contre-Torpilleur !");
+                    break;
+                case Hit.HitState.CoulerSousMarin:
+                    MessageBox.Show("Vous avez coulé le Sous-Marin !");
+                    break;
+                case Hit.HitState.CoulerTorpilleur:
+                    MessageBox.Show("Vous avez coulé le Torpilleur !");
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
