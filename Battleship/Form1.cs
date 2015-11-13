@@ -69,11 +69,13 @@ namespace Battleship
                         break;
                     case Jeu.GameState.WaitingTurn:
                         LB_State.Text = "WaitingTurn";
+                        LB_State.ForeColor = Color.Red;
                         lastStat = jeu.State;
                         break;
                     case Jeu.GameState.PlayingTurn:
                         
                         LB_State.Text = "PlayingTurn";
+                        LB_State.ForeColor = Color.Green;
                         if (lastStat != jeu.State)
                         {
                             temp++;
@@ -95,7 +97,10 @@ namespace Battleship
                                 lastStat = Jeu.GameState.WaitingStartGame;
                                 jeu.Close();
                                 Jeu.Lock.ReleaseMutex();
-                                jeu = new Jeu();
+                                if (TB_IpAdress.Text == "")
+                                    jeu = new Jeu("LocalHost");
+                                else
+                                    jeu = new Jeu(TB_IpAdress.Text);
                                 Jeu.Lock.WaitOne();
                             }
                             else
@@ -152,7 +157,7 @@ namespace Battleship
             if (BSG_Client.EtatGrille == BattleShipGrid.BattleShipGrid.GridState.BateauxPlacer)
             {
                 jeu.EnvoiBateau(BSG_Client.PositionBateau);
-                button1.Enabled = false;
+                BTN_EnvoyerBateaux.Enabled = false;
             }
         }
 
@@ -160,9 +165,13 @@ namespace Battleship
         {
             try
             {
-                jeu = new Jeu();
-                BT_Connection.Enabled = false;
-                button1.Enabled = true;
+                if (TB_IpAdress.Text == "")
+                    jeu = new Jeu("LocalHost");
+                else
+                    jeu = new Jeu(TB_IpAdress.Text);
+                BTN_Connection.Enabled = false;
+                TB_IpAdress.Enabled = false;
+                BTN_EnvoyerBateaux.Enabled = true;                
             }
             catch (Exception ex)
             {

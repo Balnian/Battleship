@@ -32,10 +32,12 @@ namespace Battleship
         private Thread waitingTurn;
         private List<Hit> listHit = new List<Hit>();
         public PosShips EnemyShips = null;
+        private String ipAdress;
         //private volatile bool gameStarted = false;
 
-        public Jeu()
+        public Jeu(String Ip)
         {
+            ipAdress = Ip;
             Lock.WaitOne();
             State = GameState.WaitingStartGame;
             Lock.ReleaseMutex();
@@ -51,7 +53,7 @@ namespace Battleship
                 case GameState.WaitingStartGame:
                     try
                     {
-                        serveur = new TcpClient(/*"173.178.211.254"*/"P104-13", 8080);
+                        serveur = new TcpClient(/*"173.178.211.254"*//*"P104-13"*/ipAdress, 8080);
                         attente = new Thread(AttendreDebutPartie);
                         attente.Start();
                     }

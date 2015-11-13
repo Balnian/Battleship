@@ -31,8 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.LB_State = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.BT_Connection = new System.Windows.Forms.Button();
+            this.BTN_EnvoyerBateaux = new System.Windows.Forms.Button();
+            this.BTN_Connection = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -40,7 +40,10 @@
             this.lb_takeInputs = new System.Windows.Forms.Label();
             this.BSG_Client = new BattleShipGrid.BattleShipGrid();
             this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
+            this.TB_IpAdress = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer1
@@ -51,32 +54,32 @@
             // LB_State
             // 
             this.LB_State.AutoSize = true;
-            this.LB_State.Location = new System.Drawing.Point(207, 359);
+            this.LB_State.Location = new System.Drawing.Point(337, 364);
             this.LB_State.Name = "LB_State";
             this.LB_State.Size = new System.Drawing.Size(26, 13);
             this.LB_State.TabIndex = 2;
             this.LB_State.Text = "État";
             // 
-            // button1
+            // BTN_EnvoyerBateaux
             // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(110, 354);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(91, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Envoyer Bateau";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.BTN_EnvoyerBateaux.Enabled = false;
+            this.BTN_EnvoyerBateaux.Location = new System.Drawing.Point(130, 351);
+            this.BTN_EnvoyerBateaux.Name = "BTN_EnvoyerBateaux";
+            this.BTN_EnvoyerBateaux.Size = new System.Drawing.Size(91, 71);
+            this.BTN_EnvoyerBateaux.TabIndex = 3;
+            this.BTN_EnvoyerBateaux.Text = "Envoyer Bateau";
+            this.BTN_EnvoyerBateaux.UseVisualStyleBackColor = true;
+            this.BTN_EnvoyerBateaux.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // BT_Connection
+            // BTN_Connection
             // 
-            this.BT_Connection.Location = new System.Drawing.Point(29, 354);
-            this.BT_Connection.Name = "BT_Connection";
-            this.BT_Connection.Size = new System.Drawing.Size(75, 23);
-            this.BT_Connection.TabIndex = 4;
-            this.BT_Connection.Text = "Connection";
-            this.BT_Connection.UseVisualStyleBackColor = true;
-            this.BT_Connection.Click += new System.EventHandler(this.BT_Connection_Click);
+            this.BTN_Connection.Location = new System.Drawing.Point(6, 18);
+            this.BTN_Connection.Name = "BTN_Connection";
+            this.BTN_Connection.Size = new System.Drawing.Size(100, 23);
+            this.BTN_Connection.TabIndex = 4;
+            this.BTN_Connection.Text = "Connecter";
+            this.BTN_Connection.UseVisualStyleBackColor = true;
+            this.BTN_Connection.Click += new System.EventHandler(this.BT_Connection_Click);
             // 
             // label1
             // 
@@ -113,7 +116,7 @@
             // lb_takeInputs
             // 
             this.lb_takeInputs.AutoSize = true;
-            this.lb_takeInputs.Location = new System.Drawing.Point(309, 359);
+            this.lb_takeInputs.Location = new System.Drawing.Point(404, 364);
             this.lb_takeInputs.Name = "lb_takeInputs";
             this.lb_takeInputs.Size = new System.Drawing.Size(26, 13);
             this.lb_takeInputs.TabIndex = 11;
@@ -154,25 +157,45 @@
             this.BSG_Enemy.WaitingForInput = false;
             this.BSG_Enemy.OnHit += new BattleShipGridAttaque.BattleShipGridAttaque.HitHandler(this.battleShipGridAttaque1_OnHit);
             // 
+            // TB_IpAdress
+            // 
+            this.TB_IpAdress.Location = new System.Drawing.Point(6, 48);
+            this.TB_IpAdress.Name = "TB_IpAdress";
+            this.TB_IpAdress.Size = new System.Drawing.Size(100, 20);
+            this.TB_IpAdress.TabIndex = 12;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.BTN_Connection);
+            this.groupBox1.Controls.Add(this.TB_IpAdress);
+            this.groupBox1.Location = new System.Drawing.Point(12, 345);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(112, 77);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Connexion";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(661, 392);
+            this.ClientSize = new System.Drawing.Size(661, 448);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lb_takeInputs);
             this.Controls.Add(this.BSG_Enemy);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.BSG_Client);
-            this.Controls.Add(this.BT_Connection);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.BTN_EnvoyerBateaux);
             this.Controls.Add(this.LB_State);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,8 +205,8 @@
 
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label LB_State;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button BT_Connection;
+        private System.Windows.Forms.Button BTN_EnvoyerBateaux;
+        private System.Windows.Forms.Button BTN_Connection;
         private BattleShipGrid.BattleShipGrid BSG_Client;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label label1;
@@ -191,6 +214,8 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private BattleShipGridAttaque.BattleShipGridAttaque BSG_Enemy;
         private System.Windows.Forms.Label lb_takeInputs;
+        private System.Windows.Forms.TextBox TB_IpAdress;
+        private System.Windows.Forms.GroupBox groupBox1;
 
     }
 }
