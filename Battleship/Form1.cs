@@ -51,6 +51,7 @@ namespace Battleship
             if (jeu != null)
             {
                 Jeu.Lock.WaitOne();
+                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
                 switch (jeu.State)
                 {
                     case Jeu.GameState.WaitingStartGame:
@@ -164,8 +165,9 @@ namespace Battleship
 
         private void battleShipGridAttaque1_OnHit(object sender, BattleShipGridAttaque.BattleShipGridAttaque.HitArgs args)
         {
-            BSG_Enemy.WaitingForInput = false;
+            //BSG_Enemy.WaitingForInput = false;
             jeu.PlayingTurn(args.Location,BSG_Enemy.AddHit);
+            Thread.Sleep(100);
         }
     }
 }

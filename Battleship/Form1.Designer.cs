@@ -37,6 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lb_takeInputs = new System.Windows.Forms.Label();
             this.BSG_Client = new BattleShipGrid.BattleShipGrid();
             this.BSG_Enemy = new BattleShipGridAttaque.BattleShipGridAttaque();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -107,6 +108,15 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
+            // lb_takeInputs
+            // 
+            this.lb_takeInputs.AutoSize = true;
+            this.lb_takeInputs.Location = new System.Drawing.Point(265, 364);
+            this.lb_takeInputs.Name = "lb_takeInputs";
+            this.lb_takeInputs.Size = new System.Drawing.Size(26, 13);
+            this.lb_takeInputs.TabIndex = 11;
+            this.lb_takeInputs.Text = "État";
+            // 
             // BSG_Client
             // 
             this.BSG_Client.BorderOfSelection = System.Drawing.Color.Transparent;
@@ -147,6 +157,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(661, 392);
+            this.Controls.Add(this.lb_takeInputs);
             this.Controls.Add(this.BSG_Enemy);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
@@ -177,6 +188,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private BattleShipGridAttaque.BattleShipGridAttaque BSG_Enemy;
+        private System.Windows.Forms.Label lb_takeInputs;
 
     }
 }

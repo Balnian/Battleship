@@ -214,7 +214,11 @@ namespace BattleShipGridAttaque
                 }
 
                 if (!exist)
-                    OnHit(this,new HitArgs(coords));
+                {
+                    WaitingForInput = false;
+                    OnHit(this, new HitArgs(coords));
+                }
+                    
             }
         }
 
