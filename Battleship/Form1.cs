@@ -73,8 +73,11 @@ namespace Battleship
                     case Jeu.GameState.PlayingTurn:
                         LB_State.Text = "PlayingTurn";
                         if (jeu.State != lastStat)
-                            BSG_Enemy.WaitingForInput = true;
-                        lastStat = jeu.State;
+                        {
+                            lastStat = jeu.State;
+                            BSG_Enemy.WaitingForInput = true;                         
+                        }
+                            
                         break;
                     case Jeu.GameState.ServerDC:
                         LB_State.Text = "ServerDC";
