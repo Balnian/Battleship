@@ -162,14 +162,7 @@ namespace BattleShipGridAttaque
         //private List<Hit> phitList = new List<Hit>();
         
         private List<Hit> hitList = new List<Hit>();
-        //{ 
-        //    get { 
-        //        return phitList; 
-        //    } 
-        //    set { 
-        //        phitList = value; 
-        //    } 
-        //}
+
 
         #endregion
 
@@ -231,6 +224,9 @@ namespace BattleShipGridAttaque
             LockWaitinginput.ReleaseMutex();
         }
 
+        /// <summary>
+        /// Change l'état du boolean pour l'attente d'un click client
+        /// </summary>
         public void WaitForinput()
         {
             LockWaitinginput.WaitOne();
@@ -248,15 +244,23 @@ namespace BattleShipGridAttaque
             DrawSelection(coords);*/
         }
 
+        /// <summary>
+        /// Ajouter un hit a la list
+        /// </summary>
+        /// <param name="leH">le Hit</param>
         public void AddHit(Hit leH)
         {
             Lock.WaitOne();
             hitList.Add(leH);            
             Lock.ReleaseMutex();
             Refresh();
-            showSinkedShip(leH);
+            showSinkedShip(leH);//Message box de bateau couléS
         }
 
+        /// <summary>
+        /// Vérifie quel bateau a été coulé si il y a lieu
+        /// </summary>
+        /// <param name="hit">le Hit</param>
         public void showSinkedShip(Hit hit)
         {
             switch (hit.Etat)
@@ -321,6 +325,9 @@ namespace BattleShipGridAttaque
 
         #region Draw
 
+        /// <summary>
+        /// Colorie les cases touchees en fonction du type de Hit
+        /// </summary>
         private void DrawShots()
         {
             Lock.WaitOne();
@@ -332,6 +339,9 @@ namespace BattleShipGridAttaque
             Lock.ReleaseMutex();
         }
 
+        /// <summary>
+        /// Dessine les bateau sur la grille
+        /// </summary>
         private void DrawShips()
         {
             if (PositionBateau != null)
@@ -344,11 +354,15 @@ namespace BattleShipGridAttaque
             }
         }
 
+        /// <summary>
+        /// Dessine un bateau individuellement
+        /// </summary>
+        /// <param name="img">l'image du bateau</param>
+        /// <param name="location">la position du bateau</param>
+        /// <param name="orientation">l'orientation du bateau</param>
+        /// <param name="ShipSize">la taille du bateau</param>
         private void DrawSingleShip(Image img, Point location, PosShips.Orientation orientation, int ShipSize)
         {
-
-
-
             if (orientation == PosShips.Orientation.Verticale)
             {
                 Image carry = (Image)img.Clone();
@@ -359,19 +373,28 @@ namespace BattleShipGridAttaque
             {
                 DrawImage(img, location.X * GridRectWidth, location.Y * GridRectHeight, ShipSize * GridRectWidth, 1 * GridRectHeight);
             }
-
-            //DrawImage(Torpilleur, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
         }
 
+        /// <summary>
+        /// Dessine une image
+        /// </summary>
+        /// <param name="img">Image</param>
+        /// <param name="x">pos X</param>
+        /// <param name="y">pos Y</param>
+        /// <param name="width">Largeur</param>
+        /// <param name="height">Hauteur</param>
         private void DrawImage(Image img, float x, float y, float width, float height)
         {
             Graphics graph = this.CreateGraphics();
             //BufferedGraphicsContext graph = BufferedGraphicsManager.Current;
             graph.DrawImage(img, x, y, width, height);
-            //MessageBox.Show(x.)
-
         }
 
+        /// <summary>
+        /// Dessine la case selon un point
+        /// </summary>
+        /// <param name="coords">Coordonnes</param>
+        /// <param name="couleur">Couleur</param>
         private void DrawHit(Point coords,Color couleur)
         {
             if (coords.X < 9 && coords.Y < 9)
