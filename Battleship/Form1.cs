@@ -88,24 +88,25 @@ namespace Battleship
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
-                            if (MessageBox.Show("La Connexion avec le serveur a été interrompu\nVoulez-vous Réesseyer ?",
+                            if (MessageBox.Show("La Connexion avec le serveur a été interrompu",
                                 "Problème Reseau",
-                                MessageBoxButtons.RetryCancel,
-                                MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.OK)
                             {
-                                lastStat = Jeu.GameState.WaitingStartGame;
+                                /*lastStat = Jeu.GameState.WaitingStartGame;
                                 jeu.Close();
                                 Jeu.Lock.ReleaseMutex();
                                 if (TB_IpAdress.Text == "")
                                     jeu = new Jeu("LocalHost",BSG_Client.AddHit);
                                 else
                                     jeu = new Jeu(TB_IpAdress.Text, BSG_Client.AddHit);
-                                Jeu.Lock.WaitOne();
-                            }
-                            else
-                            {
+                                Jeu.Lock.WaitOne();*/
                                 this.Close();
                             }
+                            /*else
+                            {
+                                this.Close();
+                            }*/
                         }
                         //lastStat = jeu.State;
                         break;
