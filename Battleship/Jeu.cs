@@ -53,7 +53,7 @@ namespace Battleship
                 case GameState.WaitingStartGame:
                     try
                     {
-                        serveur = new TcpClient(/*"173.178.211.254"*//*"P104-13"*/ipAdress, 8080);
+                        serveur = new TcpClient(ipAdress, 8080);
                         attente = new Thread(AttendreDebutPartie);
                         attente.Start();
                     }
