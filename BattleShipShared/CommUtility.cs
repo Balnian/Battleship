@@ -13,6 +13,11 @@ namespace BattleShipShared
     {
         public class CommUtility
         {
+            /// <summary>
+            /// Serialise et envoie
+            /// </summary>
+            /// <param name="ns">Stream dans lequel envoyer</param>
+            /// <param name="o">Objet à envoyer</param>
             public static void SerializeAndSend(NetworkStream ns, object o)
             {
                 if (o.GetType().IsSerializable)
@@ -22,6 +27,11 @@ namespace BattleShipShared
                 }
             }
 
+            /// <summary>
+            /// Lit et deserialise l'élément dans le Stream
+            /// </summary>
+            /// <param name="ns">Stream</param>
+            /// <returns>objet deserialiser</returns>
             public static object ReadAndDeserialize(NetworkStream ns)
             {
                 IFormatter formatter = new BinaryFormatter();
