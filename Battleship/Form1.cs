@@ -78,7 +78,7 @@ namespace Battleship
                         if (lastStat != jeu.State)
                         {
                             lastStat = jeu.State;
-                            BSG_Enemy.WaitingForInput = true;                         
+                            BSG_Enemy.WaitForinput();                        
                         }
                             
                         break;

@@ -174,6 +174,7 @@ namespace BattleShipGridAttaque
         #endregion
 
         private Mutex Lock = new Mutex();
+        private Mutex LockWaitinginput = new Mutex();
 
         public delegate void HitHandler(object sender, HitArgs args);
         public event HitHandler OnHit;
@@ -220,11 +221,20 @@ namespace BattleShipGridAttaque
 
                 if (!exist)
                 {
+                    LockWaitinginput.WaitOne();
                     WaitingForInput = false;
+                    LockWaitinginput.ReleaseMutex();
                     OnHit(this, new HitArgs(coords));
                 }
                     
             }
+        }
+
+        public void WaitForinput()
+        {
+            LockWaitinginput.WaitOne();
+            WaitingForInput = true;
+            LockWaitinginput.ReleaseMutex();
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
