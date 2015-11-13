@@ -222,7 +222,7 @@ namespace BattleShipGridAttaque
 
                 if (!exist)
                 {
-                    
+                    Console.Beep(800,300);
                     WaitingForInput = false;
                     
                     OnHit(this, new HitArgs(coords));
