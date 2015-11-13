@@ -25,7 +25,7 @@ namespace BattleshipServer
         Thread Serveur;
         Mutex LockRessource;
 
-       // ServerState State = ServerState.Arreter;
+        // ServerState State = ServerState.Arreter;
         public Form1()
         {
             InitializeComponent();
@@ -47,13 +47,13 @@ namespace BattleshipServer
 
         private void RB_Arreter_CheckedChanged(object sender, EventArgs e)
         {
-            if(RB_Arreter.Checked)
-            ArreterServeur();
+            if (RB_Arreter.Checked)
+                ArreterServeur();
         }
 
         private void RB_Demarrer_CheckedChanged(object sender, EventArgs e)
         {
-            if(RB_Demarrer.Checked)
+            if (RB_Demarrer.Checked)
                 DemarrerServeur();
         }
 
@@ -69,37 +69,37 @@ namespace BattleshipServer
             {
                 Serveur.Abort();
             }*/
-            
+
         }
 
         private void DemarrerServeur()
         {
-           /* switch (Serveur.ThreadState)
-            {
-                case ThreadState.AbortRequested:
-                    break;
-                case ThreadState.Aborted:
-                    Serveur = new Thread(serv.ListenServeur);
+            /* switch (Serveur.ThreadState)
+             {
+                 case ThreadState.AbortRequested:
+                     break;
+                 case ThreadState.Aborted:
+                     Serveur = new Thread(serv.ListenServeur);
 
                 
-                case ThreadState.Unstarted:
-                    Serveur.Start();
+                 case ThreadState.Unstarted:
+                     Serveur.Start();
 
-                    break;
-                default:
+                     break;
+                 default:
                     
-                    break;
-            }*/
-            if (Serveur.ThreadState==ThreadState.Stopped)
+                     break;
+             }*/
+            if (Serveur.ThreadState == ThreadState.Stopped)
             {
                 Serveur = new Thread(serv.ListenServeur);
             }
-           
-           Serveur.Start();
 
-	       
-            
-            
+            Serveur.Start();
+
+
+
+
         }
 
         void UpdateGameInstancesView()
@@ -129,9 +129,9 @@ namespace BattleshipServer
             if (compteurJoueur != compteurNode)
             {
 
-                
+
                 TV_GameInstancesView.Nodes.Clear();
-                
+
                 /*foreach (TreeNode node in TV_GameInstancesView.Nodes)
                 {
                     node.Remove();
@@ -139,19 +139,27 @@ namespace BattleshipServer
                 */
                 for (int i = 0; i < MatchMakingServeur.GameInstances.Count; i++)
                 {
-                    TreeNode currNode = TV_GameInstancesView.Nodes.Add("Instance" + i.ToString(),"Instance" + i.ToString(), "Instance");
+                    TreeNode currNode = TV_GameInstancesView.Nodes.Add("Instance" + i.ToString(), "Instance" + i.ToString(), "Instance");
                     currNode.SelectedImageKey = "Instance";
-
-                    currNode.Nodes.Add("Joueur1",((IPEndPoint)MatchMakingServeur.GameInstances[i].Joueur1.Client.RemoteEndPoint).Address.ToString(),"Joueur")
-                        .SelectedImageKey = "Joueur";
-                    if (MatchMakingServeur.GameInstances[i].Joueur2 != null)
+                    try
                     {
-                        currNode.Nodes.Add("Joueur1", ((IPEndPoint)MatchMakingServeur.GameInstances[i].Joueur2.Client.RemoteEndPoint).Address.ToString(), "Joueur")
-                            .SelectedImageKey = "Joueur";
+                        if (MatchMakingServeur.GameInstances[i].Joueur1 != null)
+                        currNode.Nodes.Add("Joueur1", ((IPEndPoint)MatchMakingServeur.GameInstances[i].Joueur1.Client.RemoteEndPoint).Address.ToString(), "Joueur")
+                                                .SelectedImageKey = "Joueur";
                     }
-                   
-                        
-                    
+                    catch (Exception)
+                    { }
+
+                    try
+                    {
+                        if (MatchMakingServeur.GameInstances[i].Joueur2 != null)
+                        {
+                            currNode.Nodes.Add("Joueur1", ((IPEndPoint)MatchMakingServeur.GameInstances[i].Joueur2.Client.RemoteEndPoint).Address.ToString(), "Joueur")
+                                .SelectedImageKey = "Joueur";
+                        }
+                    }
+                    catch (Exception)
+                    {  }
                 }
             }
             LockRessource.ReleaseMutex();
@@ -166,7 +174,7 @@ namespace BattleshipServer
         {
             serv.DropAllGameInstances();
         }
-        
+
 
 
 
