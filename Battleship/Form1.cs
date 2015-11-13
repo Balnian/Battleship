@@ -51,7 +51,7 @@ namespace Battleship
             if (jeu != null)
             {
                 Jeu.Lock.WaitOne();
-                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
+                
                 switch (jeu.State)
                 {
                     case Jeu.GameState.WaitingStartGame:
@@ -134,6 +134,7 @@ namespace Battleship
                                                     MessageBoxIcon.Error);
                         break;
                 }
+                lb_takeInputs.Text = BSG_Enemy.WaitingForInput.ToString();
                 Jeu.Lock.ReleaseMutex();
                 
             }
