@@ -203,7 +203,7 @@ namespace BattleShipGridAttaque
             {
                 Point coords = GetGridCoordOfMouse().ToPoint();
                 bool exist = false;
-                Lock.WaitOne();
+                //Lock.WaitOne();
                 //Check si il y a déja un hit
                 for (int i = 0; hitList!=null && i < hitList.Count;i++ )
                 {
@@ -216,7 +216,7 @@ namespace BattleShipGridAttaque
                         }
 
                 }
-                Lock.ReleaseMutex();
+                //Lock.ReleaseMutex();
 
                 if (!exist)
                 {
@@ -239,10 +239,10 @@ namespace BattleShipGridAttaque
 
         public void AddHit(Hit leH)
         {
-            Lock.WaitOne();
+            //Lock.WaitOne();
             hitList.Add(leH);
             Refresh();
-            Lock.ReleaseMutex();
+            //Lock.ReleaseMutex();
         }
 
         /// <summary>
@@ -287,13 +287,13 @@ namespace BattleShipGridAttaque
 
         private void DrawShots()
         {
-            Lock.WaitOne();
+            //Lock.WaitOne();
             if(hitList!=null)
             foreach (Hit item in hitList)
 	        {              
 		        DrawHit(item.Location,((item.Etat!=Hit.HitState.Flop)?Color.Red:Color.Blue));
 	        }
-            Lock.ReleaseMutex();
+            //Lock.ReleaseMutex();
         }
 
         private void DrawShips()
