@@ -28,6 +28,7 @@ namespace BattleShipShared
                 try
                 {
                     return formatter.Deserialize(ns);
+
                 }
                 catch (Exception e)
                 {
