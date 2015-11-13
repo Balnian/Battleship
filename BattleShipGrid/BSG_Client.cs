@@ -14,7 +14,9 @@ namespace BattleShipGrid
 {
     public partial class BattleShipGrid : UserControl
     {
-
+        /// <summary>
+        /// Classe pour remplacer le Point pour avoir plus de précision
+        /// </summary>
         class FPoint
         {
             public float X;
@@ -36,7 +38,9 @@ namespace BattleShipGrid
             }
 
         }
-
+        /// <summary>
+        /// États de la grille
+        /// </summary>
         public enum GridState
         {
             BateauxPlacer,
@@ -120,20 +124,37 @@ namespace BattleShipGrid
             set { PInteriorOfSelection = value; }
         }
 
+        /// <summary>
+        /// image Porte-Avion
+        /// </summary>
         public Image PorteAvions { get; set; }
+        /// <summary>
+        /// image Croiseur
+        /// </summary>
         public Image Croiseur { get; set; }
-
+        /// <summary>
+        /// image Contre-Torpilleur
+        /// </summary>
         public Image ContreTorpilleur { get; set; }
+        /// <summary>
+        /// image Sous-Marin
+        /// </summary>
         public Image SousMarin { get; set; }
+        /// <summary>
+        /// image Torpilleur
+        /// </summary>
         public Image Torpilleur { get; set; }
 
-
+        //Grosseur des bateau
         private const uint SizePorteAvions = 5;
         private const uint SizeCroiseur = 4;
         private const uint SizeContreTorpilleur = 3;
         private const uint SizeSousMarin = 3;
         private const uint SizeTorpilleur = 2;
 
+        /// <summary>
+        /// Orientation présente du bateau qui est en trains d'être placé
+        /// </summary>
         private PosShips.Orientation OCurrentShip { get; set; }
 
         /// <summary>
@@ -141,8 +162,14 @@ namespace BattleShipGrid
         /// </summary>
         public PosShips PositionBateau { get; private set; }
 
+        /// <summary>
+        /// État de la grille
+        /// </summary>
         public GridState EtatGrille { get; private set; }
 
+        /// <summary>
+        /// Liste des tir à afficher
+        /// </summary>
         private List<Hit> hitList = new List<Hit>();
 
 
@@ -153,20 +180,22 @@ namespace BattleShipGrid
         public BattleShipGrid()
         {
             InitializeComponent();
-            //DoubleBuffered = true;
             EtatGrille = GridState.None;
             OCurrentShip = PosShips.Orientation.Horizontale;
             PositionBateau = new PosShips();
-            //this.SetStyle(ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
-            //this.SetStyle(ControlStyles.AllPaintingInWmPaint)
 
         }
 
+        /// <summary>
+        /// Redessine lors du resize
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             Refresh();
         }
+
         /// <summary>
         /// Action lors du click sur la grille
         /// </summary>
@@ -248,7 +277,11 @@ namespace BattleShipGrid
         }
 
         
-
+        /// <summary>
+        /// Vérifie si le bateau peux-être placée à cet endroit
+        /// </summary>
+        /// <param name="location">Position du bateau</param>
+        /// <returns>si il peux être placé</returns>
         private bool CheckBoatLocation(Point location)
         {
             bool Result = true;
@@ -313,6 +346,7 @@ namespace BattleShipGrid
 
                     break;
                 case GridState.PlacementContreTorpilleur:
+                    //Check Contre-Torpilleur
                     if (OCurrentShip == PosShips.Orientation.Horizontale)
                     {
                         if (location.X + SizeContreTorpilleur - 1 < 10)
@@ -337,6 +371,7 @@ namespace BattleShipGrid
                     }
                     break;
                 case GridState.PlacementCroiseur:
+                    //Check Croiseur
                     if (OCurrentShip == PosShips.Orientation.Horizontale)
                     {
                         if (location.X + SizeCroiseur - 1 < 10)
@@ -359,6 +394,7 @@ namespace BattleShipGrid
                     }
                     break;
                 case GridState.PlacementPorteAvions:
+                    //Check Porte-Avion
                     if (OCurrentShip == PosShips.Orientation.Horizontale)
                     {
                         if (location.X + SizePorteAvions - 1 < 10)
@@ -380,6 +416,14 @@ namespace BattleShipGrid
             return Result;
         }
 
+        /// <summary>
+        /// Si le point overlaps le bateau
+        /// </summary>
+        /// <param name="Hit">position sur la grille</param>
+        /// <param name="location">position du bateau</param>
+        /// <param name="orient">orientation du bateau</param>
+        /// <param name="longueur">Longueur du bateau</param>
+        /// <returns></returns>
         private bool containsHit(Point Hit, Point location, PosShips.Orientation orient, int longueur)
         {
             if (orient == PosShips.Orientation.Horizontale)
@@ -398,6 +442,10 @@ namespace BattleShipGrid
             }
         }
 
+        /// <summary>
+        /// Ajoute un tir à la liste et rafraichie l'affichage
+        /// </summary>
+        /// <param name="leH">le tir à ajouter</param>
         public void AddHit(Hit leH)
         {
             Lock.WaitOne();
@@ -407,12 +455,19 @@ namespace BattleShipGrid
 
         }
 
+        /// <summary>
+        /// Pour commencer à placer les bateau sur la grille
+        /// </summary>
         public void DebutPlacerBateaux()
         {
             if (EtatGrille == GridState.None)
                 EtatGrille = GridState.PlacementPorteAvions;
         }
 
+        /// <summary>
+        /// Rafraichie l'affichage au mouvement de la souris (preview position bateau)
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -458,6 +513,9 @@ namespace BattleShipGrid
 
         #region Draw
 
+        /// <summary>
+        /// dessine les tires
+        /// </summary>
         private void DrawShots()
         {
             Lock.WaitOne();
@@ -469,6 +527,9 @@ namespace BattleShipGrid
             Lock.ReleaseMutex();
         }
 
+        /// <summary>
+        /// Dessine les bateaux
+        /// </summary>
         private void DrawShips()
         {
 
@@ -500,26 +561,14 @@ namespace BattleShipGrid
                     break;
 
             }
-            /*switch (EtatGrille)
-            {
-                case GridState.BateauxPlacer:
-                    
-                case GridState.PlacementPorteAvions:
-                    if (PorteAvions != null)
-                        DrawImage(PorteAvions, 2 * GridRectWidth, 2 * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
-                case GridState.PlacementCroiseur:
-                    break;
-                case GridState.PlacementSousMarin:
-                    break;
-                case GridState.PlacementTorpilleur:
-                    break;
-                default:
-                    break;
-            }*/
-            /*if(PorteAvions!= null)
-                DrawImage(PorteAvions,2*GridRectWidth,2*GridRectHeight,5*GridRectWidth,1*GridRectHeight);*/
+            
         }
 
+        /// <summary>
+        /// Dessine un bateau
+        /// </summary>
+        /// <param name="img">image</param>
+        /// <param name="ImgState">état de la grille</param>
         private void DrawSingleShip(Image img, GridState ImgState)
         {
 
@@ -646,11 +695,17 @@ namespace BattleShipGrid
                         break;
                 }
             }
-            //DrawImage(Torpilleur, PositionBateau.PTorpilleur.X * GridRectWidth, PositionBateau.PTorpilleur.Y * GridRectHeight, 5 * GridRectWidth, 1 * GridRectHeight);
-
-
+            
         }
 
+        /// <summary>
+        /// dessine une image
+        /// </summary>
+        /// <param name="img">image</param>
+        /// <param name="x">position en X</param>
+        /// <param name="y">position en Y</param>
+        /// <param name="width">Largeur</param>
+        /// <param name="height">Hauteur</param>
         private void DrawImage(Image img, float x, float y, float width, float height)
         {
             Graphics graph = this.CreateGraphics();
@@ -660,6 +715,11 @@ namespace BattleShipGrid
 
         }
 
+        /// <summary>
+        /// Dessine le jeton qui représente un tir su la grille
+        /// </summary>
+        /// <param name="coords">coordonnée du tir</param>
+        /// <param name="couleur">couleur du jeton</param>
         private void DrawHit(Point coords, Color couleur)
         {
             if (coords.X < 9 && coords.Y < 9)
@@ -672,6 +732,7 @@ namespace BattleShipGrid
                 DrawRect(couleur, couleur, coords.X * GridRectWidth, coords.Y * GridRectHeight, GridRectWidth, Height - coords.Y * GridRectHeight);
 
         }
+
         /// <summary>
         /// Dessine le rectangle sous la coordonné
         /// </summary>
