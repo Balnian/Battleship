@@ -114,6 +114,7 @@ namespace Battleship
                         {
                             lastStat = jeu.State;
                             BSG_Enemy.PositionBateau = jeu.EnemyShips;
+                            BSG_Enemy.Refresh();
                             MessageBox.Show("Victoire! :)",
                                                         "État de la partie",
                                                         MessageBoxButtons.OK,
@@ -127,6 +128,7 @@ namespace Battleship
                         {
                             lastStat = jeu.State;
                             BSG_Enemy.PositionBateau = jeu.EnemyShips;
+                            BSG_Enemy.Refresh();
                             MessageBox.Show("Défaite.. :(",
                                                       "État de la partie",
                                                       MessageBoxButtons.OK,
