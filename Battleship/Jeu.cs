@@ -157,6 +157,7 @@ namespace Battleship
                     {
                         Lock.WaitOne();
                         State = GameState.Lose;
+                        EnemyShips = result.EnemyShips;
                         Lock.ReleaseMutex();
                         
                     }
@@ -164,6 +165,7 @@ namespace Battleship
                     {
                         Lock.WaitOne();
                         State = GameState.Victory;
+                        EnemyShips = result.EnemyShips;
                         Lock.ReleaseMutex();
                     }
                     UpdateAction();
