@@ -55,7 +55,7 @@ namespace Battleship
                 switch (jeu.State)
                 {
                     case Jeu.GameState.WaitingStartGame:
-                        LB_State.Text = "WaitingStartGame";
+                        LB_State.Text = "Attente d'une partie";
                         lastStat = jeu.State;                        
                         break;
                     case Jeu.GameState.PlacingBoat:
@@ -63,17 +63,17 @@ namespace Battleship
                         {
                             BSG_Client.DebutPlacerBateaux();
                         }
-                        LB_State.Text = "PlacingBoat";
+                        LB_State.Text = "Placer vos bateaux";
                         lastStat = jeu.State;
                         break;
                     case Jeu.GameState.WaitingTurn:
-                        LB_State.Text = "WaitingTurn";
+                        LB_State.Text = "Attente de l'autre joueur..";
                         LB_State.ForeColor = Color.Red;
                         lastStat = jeu.State;
                         break;
                     case Jeu.GameState.PlayingTurn:
                         
-                        LB_State.Text = "PlayingTurn";
+                        LB_State.Text = "À vous de jouer !";
                         LB_State.ForeColor = Color.Green;
                         if (lastStat != jeu.State)
                         {
@@ -83,7 +83,8 @@ namespace Battleship
                             
                         break;
                     case Jeu.GameState.ServerDC:
-                        LB_State.Text = "ServerDC";
+                        LB_State.Text = "Echec Du Serveur";
+                        LB_State.ForeColor = Color.Red;
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
