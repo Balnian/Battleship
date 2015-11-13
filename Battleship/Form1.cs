@@ -51,12 +51,12 @@ namespace Battleship
             if (jeu != null)
             {
                 Jeu.Lock.WaitOne();
-                
+
                 switch (jeu.State)
                 {
                     case Jeu.GameState.WaitingStartGame:
                         LB_State.Text = "Attente d'une partie";
-                        lastStat = jeu.State;                        
+                        lastStat = jeu.State;
                         break;
                     case Jeu.GameState.PlacingBoat:
                         if (jeu.State != lastStat)
@@ -72,15 +72,15 @@ namespace Battleship
                         lastStat = jeu.State;
                         break;
                     case Jeu.GameState.PlayingTurn:
-                        
+
                         LB_State.Text = "À vous de jouer !";
                         LB_State.ForeColor = Color.Green;
                         if (lastStat != jeu.State)
                         {
                             lastStat = jeu.State;
-                            BSG_Enemy.WaitForinput();                        
+                            BSG_Enemy.WaitForinput();
                         }
-                            
+
                         break;
                     case Jeu.GameState.ServerDC:
                         LB_State.Text = "Echec Du Serveur";
@@ -88,25 +88,11 @@ namespace Battleship
                         if (jeu.State != lastStat)
                         {
                             lastStat = jeu.State;
-                            if (MessageBox.Show("La Connexion avec le serveur a été interrompu",
+                            MessageBox.Show("La Connexion avec le serveur a été interrompu",
                                 "Problème Reseau",
                                 MessageBoxButtons.OK,
-                                MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.OK)
-                            {
-                                /*lastStat = Jeu.GameState.WaitingStartGame;
-                                jeu.Close();
-                                Jeu.Lock.ReleaseMutex();
-                                if (TB_IpAdress.Text == "")
-                                    jeu = new Jeu("LocalHost",BSG_Client.AddHit);
-                                else
-                                    jeu = new Jeu(TB_IpAdress.Text, BSG_Client.AddHit);
-                                Jeu.Lock.WaitOne();*/
-                                this.Close();
-                            }
-                            /*else
-                            {
-                                this.Close();
-                            }*/
+                                MessageBoxIcon.Error);
+                            this.Close();
                         }
                         //lastStat = jeu.State;
                         break;
@@ -149,7 +135,7 @@ namespace Battleship
                 }
                 LB_Debug.Text = BSG_Enemy.WaitingForInput.ToString();
                 Jeu.Lock.ReleaseMutex();
-                
+
             }
 
         }
@@ -173,7 +159,7 @@ namespace Battleship
                     jeu = new Jeu(TB_IpAdress.Text, BSG_Client.AddHit);
                 BTN_Connection.Enabled = false;
                 TB_IpAdress.Enabled = false;
-                BTN_EnvoyerBateaux.Enabled = true;                
+                BTN_EnvoyerBateaux.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -182,12 +168,12 @@ namespace Battleship
             }
         }
 
-        
+
 
         private void battleShipGridAttaque1_OnHit(object sender, BattleShipGridAttaque.BattleShipGridAttaque.HitArgs args)
         {
             //BSG_Enemy.WaitingForInput = false;
-            jeu.PlayingTurn(args.Location,BSG_Enemy.AddHit);
+            jeu.PlayingTurn(args.Location, BSG_Enemy.AddHit);
             //Thread.Sleep(100);
         }
     }
